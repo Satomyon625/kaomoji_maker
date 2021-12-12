@@ -5,9 +5,17 @@ import java.sql.Timestamp;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
+@NamedQueries({
+    @NamedQuery(
+        name = "getAllUsers",
+        query = "SELECT u FROM User AS u ORDER BY u.u_name DESC"
+    )
+})
 @Table(name = "users")
 public class User {
     @Id
