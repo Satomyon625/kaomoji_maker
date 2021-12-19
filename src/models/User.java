@@ -31,6 +31,8 @@ public class User {
     @Column(name = "updated_at", nullable = false)
     private Timestamp updated_at;
 
+    private Integer admin_flag; //ログインフィルターのためにたちまち追記
+
     public String getU_name() {
         return u_name;
     }
@@ -61,6 +63,13 @@ public class User {
 
     public void setUpdated_at(Timestamp updated_at) {
         this.updated_at = updated_at;
+    }
+
+    public Integer getAdmin_flag() {
+        return admin_flag;
+    }
+    public void setAdmin_flag(Integer admin_flag) {
+        this.admin_flag = admin_flag;
     }
 
 }
