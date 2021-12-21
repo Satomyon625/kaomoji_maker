@@ -2,7 +2,6 @@ package controllers.users;
 
 import java.io.IOException;
 
-import javax.persistence.EntityManager;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,34 +9,30 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import utils.DBUtil;
+import models.User;
 
 /**
- * Servlet implementation class IndexServlet
+ * Servlet implementation class UsersNew
  */
-@WebServlet("") //たちまち消す/index
-public class IndexServlet extends HttpServlet {
+@WebServlet("/users/new")
+public class UsersNew extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public IndexServlet() {
+    public UsersNew() {
         super();
-
     }
 
     /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        EntityManager em = DBUtil.createEntityManager();
+        request.setAttribute("_token", request.getSession().getId());
+        request.setAttribute("user", new User());
 
-        //List<User> users = em.createNamedQuery("getAllUsers", User.class).getResultList();
-
-        em.close();
-
-        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/users/_form.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/users/new.jsp");
         rd.forward(request, response);
     }
 

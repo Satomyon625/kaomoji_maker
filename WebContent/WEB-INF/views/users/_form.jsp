@@ -1,27 +1,30 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:import url="../layout/app.jsp">
-    <c:param name="content">
-        <div id="center">
-        <h2>アカウント登録</h2>
+<c:if test="${errors != null}">
+    <div id="flush_error">
+        入力内容にエラーがあります。<br />
+        <c:forEach var="error" items="${errors}">
+            ・<c:out value="${error}" /><br />
+        </c:forEach>
+
+    </div>
+</c:if>
+
                 <table>
                     <tbody>
                         <tr>
-                            <th>ユーザー名</th>
-                            <td><input type="text" name="user" id="unm" size="40" maxlength="16"></td>
+                            <th><label for="u_name">ユーザー名</label></th>
+                            <td><input type="text" name="u_name" size="40" maxlength="16" value="${user.u_name}" /></td>
                         </tr>
                         <tr>
-                            <th>パスワード</th>
-                            <td><input type="password" name="pass" id="pwd" size="40" maxlength="20"></td>
+                            <th><label for="pass">パスワード</label></th>
+                            <td><input type="password" name="pass" size="40" maxlength="20" /></td>
                         </tr>
                         <tr>
-                            <th>パスワード（確認用）</th>
-                            <td><input type="password" name="pass" id="pwd" size="40" maxlength="20"></td>
+                            <th><label for="pass">パスワード（確認用）</label></th>
+                            <td><input type="password" name="pass"  size="40" maxlength="20" /></td>
                         </tr>
                     </tbody>
                 </table>
 
-        <p><input type="submit" value="登録する"></p>
-         </div>
-    </c:param>
-</c:import>
+        <input type="hidden" name="_token" value="${_token}"/><button type="submit">登録する</button>
