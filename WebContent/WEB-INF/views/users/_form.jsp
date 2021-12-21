@@ -15,14 +15,17 @@
                         <tr>
                             <th><label for="u_name">ユーザー名</label></th>
                             <td><input type="text" name="u_name" size="40" maxlength="16" value="${user.u_name}" /></td>
+                            <td>※16文字まで(他ユーザとの重複不可)</td>
                         </tr>
                         <tr>
                             <th><label for="pass">パスワード</label></th>
                             <td><input type="password" name="pass" size="40" maxlength="20" /></td>
+                            <td>※半角英数字２０文字まで</td>
                         </tr>
                         <tr>
                             <th><label for="pass">パスワード（確認用）</label></th>
                             <td><input type="password" name="pass"  size="40" maxlength="20" /></td>
+                            <td></td>
                         </tr>
                     </tbody>
                 </table>

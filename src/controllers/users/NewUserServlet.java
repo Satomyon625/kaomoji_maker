@@ -14,14 +14,14 @@ import models.User;
 /**
  * Servlet implementation class UsersNew
  */
-@WebServlet("/users/new")
-public class UsersNew extends HttpServlet {
+@WebServlet("/newuser")
+public class NewUserServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UsersNew() {
+    public NewUserServlet() {
         super();
     }
 

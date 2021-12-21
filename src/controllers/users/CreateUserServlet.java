@@ -20,14 +20,14 @@ import utils.EncryptUtil;
 /**
  * Servlet implementation class UserCreateServlet
  */
-@WebServlet("/users/create")
-public class UserCreateServlet extends HttpServlet {
+@WebServlet("/createuser")
+public class CreateUserServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UserCreateServlet() {
+    public CreateUserServlet() {
         super();
     }
 
@@ -71,7 +71,7 @@ public class UserCreateServlet extends HttpServlet {
                 request.getSession().setAttribute("flush", "登録が完了しました。");
                 em.close();
 
-                response.sendRedirect(request.getContextPath() + "/usertop");
+                response.sendRedirect(request.getContextPath() + "/user/top");
             }
     }
 

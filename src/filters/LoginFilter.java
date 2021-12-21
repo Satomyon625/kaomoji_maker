@@ -44,19 +44,9 @@ public class LoginFilter implements Filter {
 
             User u = (User)session.getAttribute("login_user");
 
-            if(!servlet_path.equals("/login")) {
-                if(u == null) {
-                    ((HttpServletResponse)response).sendRedirect(context_path + "/login");
-                    return;
-                }
-
-                if(servlet_path.matches("/users.*") && u.getAdmin_flag() == 0) {
-                    ((HttpServletResponse)response).sendRedirect(context_path + "/");
-                    return;
-                }
-            } else {
-                if(u != null) {
-                    ((HttpServletResponse)response).sendRedirect(context_path + "/");
+            if(servlet_path.matches("/user.*")) {//ユーザ用のページにアクセスした場合
+                if(u == null) {//ログイン情報がない場合
+                    ((HttpServletResponse)response).sendRedirect(context_path + "/login");//ログイン画面に遷移
                     return;
                 }
             }

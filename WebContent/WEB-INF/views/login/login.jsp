@@ -20,10 +20,12 @@
                     <tr>
                         <th><label for="u_name">ユーザー名</label></th>
                         <td><input type="text" name="u_name" size="40" maxlength="16" value="${u_name}" /></td>
+                        <td></td>
                     </tr>
                     <tr>
                         <th><label for="pass">パスワード</label></th>
                         <td><input type="password" name="pass" size="40" maxlength="20" /></td>
+                        <td></td>
                     </tr>
                 </tbody>
             </table>
@@ -31,7 +33,7 @@
             <button type="submit">ログイン</button>
         </form>
             <p>アカウントをお持ちでない方は...↓</p>
-            <p><a href ="<c:url value='/users/new' />"><input type="submit" value="新規アカウント作成"></a></p>
+            <p><a href ="<c:url value='/newuser' />"><input type="submit" value="新規アカウント作成"></a></p>
         </div>
     </c:param>
 </c:import>
