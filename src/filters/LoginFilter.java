@@ -50,6 +50,11 @@ public class LoginFilter implements Filter {
                     return;
                 }
             }
+            if(servlet_path.equals("/login") || servlet_path.equals("/newuser")) { //ログイン画面またはアカウント登録画面にアクセスした場合
+                if(u != null) { //ログイン中の場合
+                    ((HttpServletResponse)response).sendRedirect(context_path + "/");
+                }
+            }
         }
 
         chain.doFilter(request, response);

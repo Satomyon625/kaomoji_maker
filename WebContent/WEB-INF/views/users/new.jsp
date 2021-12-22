@@ -5,7 +5,7 @@
         <div id="center">
         <h2>アカウント登録</h2>
 
-               <form method="POST" action="<c:url value='/user/create' />">
+               <form method="POST" action="<c:url value='/createuser' />">
                     <c:import url="_form.jsp" />
                </form>
 

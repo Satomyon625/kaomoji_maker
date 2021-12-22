@@ -33,8 +33,8 @@ public class LoginServlet extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("_token", request.getSession().getId());
-        request.setAttribute("hasError", false);
+        request.setAttribute("_token", request.getSession().getId());  //トークンID
+        request.setAttribute("hasError", false);  //エラーチェック
         if(request.getSession().getAttribute("flush") != null) {
             request.setAttribute("flush", request.getSession().getAttribute("flush"));
             request.getSession().removeAttribute("flush");
@@ -56,7 +56,7 @@ public class LoginServlet extends HttpServlet {
 
         User u = null;
 
-        if(u_name != null && !u_name.equals("") && plain_pass != null && !plain_pass.equals("")) {
+        if(u_name != null && !u_name.equals("") && plain_pass != null && !plain_pass.equals("")) { //ユーザー名及びパスワードが未記入でなく空白(スペース)でない場合
             EntityManager em = DBUtil.createEntityManager();
 
             String pass = EncryptUtil.getPasswordEncrypt( //plain_passはハッシュ化する前のパスワード
@@ -65,7 +65,7 @@ public class LoginServlet extends HttpServlet {
                     );
 
             try {
-                u = em.createNamedQuery("checkLoginU_nameAndPass", User.class)
+                u = em.createNamedQuery("checkLoginU_nameAndPass", User.class) //登録されているか
                         .setParameter("u_name", u_name)
                         .setParameter("pass", pass)
                         .getSingleResult();
@@ -73,22 +73,22 @@ public class LoginServlet extends HttpServlet {
 
             em.close();
 
-            if(u != null) {
+            if(u != null) { //登録されてた
                 check_result = true;
             }
         }
 
-        if(!check_result) {
+        if(!check_result) { //未記入、空白の場合,false
             request.setAttribute("_token", request.getSession().getId());
-            request.setAttribute("hasError", true);
+            request.setAttribute("hasError", true); //エラー発生
             request.setAttribute("u_name", u_name);
 
             RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/login/login.jsp");
             rd.forward(request, response);
-        } else {
+        } else { //ログイン成功
             request.getSession().setAttribute("login_user", u);
             request.getSession().setAttribute("flush", "ログインしました。");
-            response.sendRedirect(request.getContextPath() + "/user/top");
+            response.sendRedirect(request.getContextPath() + "/user/top"); // "/"?
         }
     }
 }

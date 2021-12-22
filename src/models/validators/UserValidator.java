@@ -27,6 +27,7 @@ public class UserValidator {
 
     //ユーザー名の必須入力チェック
     private static String validateU_name(String u_name, Boolean u_nameDuplicateCheckFlag) {
+        //必須入力
         if(u_name == null || u_name.equals("")) {
             return "ユーザー名を入力してください。";
         }
@@ -48,7 +49,6 @@ public class UserValidator {
         if (pass == null || pass.equals("")) {
             return "パスワードを入力してください。";
         }
-
         return "";
     }
 }

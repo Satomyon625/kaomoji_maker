@@ -9,14 +9,22 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-@Entity
+@Table(name = "users")
 @NamedQueries({
     @NamedQuery(
         name = "getAllUsers",
         query = "SELECT u FROM User AS u ORDER BY u.u_name DESC"
-    )
+    ),
+    @NamedQuery(
+            name = "checkRegisteredU_name",
+            query = "SELECT COUNT(u) FROM User AS u WHERE u.u_name = :u_name"
+            ),
+    @NamedQuery(
+            name = "checkLoginU_nameAndPass",
+            query = "SELECT u FROM User AS u WHERE u.u_name = :u_name AND u.pass = :pass" //最後のpass?
+            )
 })
-@Table(name = "users")
+@Entity
 public class User {
     @Id
     @Column(name = "u_name", length = 16, nullable = false)
@@ -30,8 +38,6 @@ public class User {
 
     @Column(name = "updated_at", nullable = false)
     private Timestamp updated_at;
-
-    private Integer admin_flag; //ログインフィルターのためにたちまち追記
 
     public String getU_name() {
         return u_name;
@@ -63,13 +69,6 @@ public class User {
 
     public void setUpdated_at(Timestamp updated_at) {
         this.updated_at = updated_at;
-    }
-
-    public Integer getAdmin_flag() {
-        return admin_flag;
-    }
-    public void setAdmin_flag(Integer admin_flag) {
-        this.admin_flag = admin_flag;
     }
 
 }
