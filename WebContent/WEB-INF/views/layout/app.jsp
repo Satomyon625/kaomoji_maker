@@ -13,9 +13,16 @@
             <div id="header">
             <div id="header_title">
              <h1>顔文字メーカー</h1>
-             </div>
+            </div>
                 <div id="header_menu">
-                    <a>顔文字一覧</a>
+                <c:if test="${sessionScope.login_user == null}">
+                    <a href="<c:url value='/toppage' />">顔文字一覧</a>&nbsp;
+                    <a href="<c:url value='/login' />">ログイン</a>
+                </c:if>
+                <c:if test="${sessionScope.login_user != null}">
+                    <a href="<c:url value='/user/top' />">顔文字一覧</a>&nbsp;
+                    <a href="<c:url value='/logout' />">ログアウト</a>&nbsp;
+                </c:if>
                 </div>
             </div>
 

@@ -27,10 +27,10 @@ import javax.persistence.Table;
 @Entity
 public class User {
     @Id
-    @Column(name = "u_name", length = 16, nullable = false)
+    @Column(name = "u_name", length = 16, nullable = false, unique = true)
     private String u_name;
 
-    @Column(name = "pass", length = 20, nullable = false)
+    @Column(name = "pass", length = 128, nullable = false)
     private String pass;
 
     @Column(name = "created_at", nullable = false)

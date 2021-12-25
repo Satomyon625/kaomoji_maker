@@ -19,12 +19,12 @@
                         </tr>
                         <tr>
                             <th><label for="pass">パスワード</label></th>
-                            <td><input type="password" name="pass" size="40" maxlength="20" /></td>
-                            <td>※半角英数字２０文字まで</td>
+                            <td><input type="password" name="pass" size="40" minlength="8" maxlength="20" /></td>
+                            <td>※半角英数字8文字以上20文字まで</td>
                         </tr>
                         <tr>
-                            <th><label for="pass">パスワード（確認用）</label></th>
-                            <td><input type="password" name="pass"  size="40" maxlength="20" /></td>
+                            <th><label for="c_pass">パスワード（確認用）</label></th>
+                            <td><input type="password" name="c_pass"  size="40" minlength="8" maxlength="20" /></td>
                             <td></td>
                         </tr>
                     </tbody>

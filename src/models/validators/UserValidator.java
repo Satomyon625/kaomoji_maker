@@ -17,7 +17,7 @@ public class UserValidator {
             errors.add(u_name_error);
         }
 
-        String pass_error = validatePass(u.getPass(), passCheckFlag);
+        String pass_error = validatePass(u.getPass(), u.getPass(), passCheckFlag);
         if(!pass_error.equals("")) {
             errors.add(pass_error);
         }
@@ -45,9 +45,13 @@ public class UserValidator {
     }
 
     // パスワードの必須入力チェック
-    private static String validatePass(String pass, Boolean passCheckFlag) {
-        if (pass == null || pass.equals("")) {
+    private static String validatePass(String pass, String c_pass, Boolean passCheckFlag) {
+        if (pass == null || pass.equals("") || c_pass == null || c_pass.equals("")) {
             return "パスワードを入力してください。";
+        }
+
+        if(pass != c_pass) {
+            return "確認用のパスワードが一致しません。";
         }
         return "";
     }
