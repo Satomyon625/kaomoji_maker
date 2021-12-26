@@ -49,11 +49,12 @@ public class UserTopServlet extends HttpServlet {
         request.setAttribute("marks", marks);
         request.setAttribute("marks_count", marks_count);
         request.setAttribute("page", page);
+ */
         if(request.getSession().getAttribute("flush") != null) {
             request.setAttribute("flush", request.getSession().getAttribute("flush"));
             request.getSession().removeAttribute("flush");
         }
-*/
+
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/toppage/usertop.jsp");
         rd.forward(request, response);
     }

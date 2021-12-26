@@ -68,6 +68,7 @@ public class CreateUserServlet extends HttpServlet {
                 em.getTransaction().begin();
                 em.persist(u);
                 em.getTransaction().commit();
+                request.getSession().setAttribute("login_user", u);
                 request.getSession().setAttribute("flush", "登録が完了しました。");
                 em.close();
 

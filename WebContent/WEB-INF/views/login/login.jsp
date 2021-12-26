@@ -19,12 +19,12 @@
                 <tbody>
                     <tr>
                         <th><label for="u_name">ユーザー名</label></th>
-                        <td><input type="text" name="u_name" size="40" maxlength="16" value="${u_name}" /></td>
+                        <td><input type="text" name="u_name" size="40" maxlength="16" value="${u_name}" required/></td>
                         <td></td>
                     </tr>
                     <tr>
                         <th><label for="pass">パスワード</label></th>
-                        <td><input type="password" name="pass" size="40" maxlength="20" /></td>
+                        <td><input type="password" name="pass" size="40" maxlength="20" required/></td>
                         <td></td>
                     </tr>
                 </tbody>

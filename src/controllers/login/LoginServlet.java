@@ -88,7 +88,7 @@ public class LoginServlet extends HttpServlet {
         } else { //ログイン成功
             request.getSession().setAttribute("login_user", u);
             request.getSession().setAttribute("flush", "ログインしました。");
-            response.sendRedirect(request.getContextPath() + "/user/top"); // "/"?
+            response.sendRedirect(request.getContextPath() + "/user/top");
         }
     }
 }
