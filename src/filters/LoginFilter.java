@@ -44,15 +44,15 @@ public class LoginFilter implements Filter {
 
             User u = (User)session.getAttribute("login_user");
 
-            if(servlet_path.matches("/user.*")) {//ユーザ用のページにアクセスした場合
+            if(servlet_path.matches("/user.*")) {//ユーザ用のページにアクセスした場合、顔文字登録or更新画面、マイページ
                 if(u == null) {//ログイン情報がない場合
                     ((HttpServletResponse)response).sendRedirect(context_path + "/login");//ログイン画面に遷移
                     return;
                 }
             }
-            if(servlet_path.equals("/login") || servlet_path.equals("/newuser") || servlet_path.equals("/toppage")) { //ログイン画面またはアカウント登録画面,ログイン未認証のトップページ
+            if(servlet_path.equals("/login") || servlet_path.equals("/newuser")) { //ログイン画面またはアカウント登録画面
                 if(u != null) { //ログイン中の場合
-                    ((HttpServletResponse)response).sendRedirect(context_path + "/user/top");
+                    ((HttpServletResponse)response).sendRedirect(context_path + "/top");
                     return;
                 }
             }

@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class ToppageServlet
  */
-@WebServlet("/toppage")
+@WebServlet("/top")
 public class ToppageServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -56,6 +56,11 @@ public class ToppageServlet extends HttpServlet {
             request.setAttribute("flush", request.getSession().getAttribute("flush"));
             request.getSession().removeAttribute("flush");
         }*/
+
+        if(request.getSession().getAttribute("flush") != null) {
+            request.setAttribute("flush", request.getSession().getAttribute("flush"));
+            request.getSession().removeAttribute("flush");
+        }
 
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/toppage/toppage.jsp");
         rd.forward(request, response);
