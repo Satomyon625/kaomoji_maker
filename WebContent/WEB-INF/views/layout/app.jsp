@@ -15,10 +15,10 @@
                     <h1>顔文字メーカー</h1>&nbsp;&nbsp;&nbsp;
                 </div>
                 <div id="header_menu">
-                    <a href="<c:url value='/top' />">顔文字一覧</a>&nbsp;
+                    <a href="<c:url value='/top' />">顔文字一覧</a>&nbsp;&nbsp;&nbsp;
                 <c:if test="${sessionScope.login_user != null}">
                     <a href="<c:url value='/user/emoticons/new' />">顔文字作成</a>&nbsp;
-                    <a href="<c:url value='/user/emoticons/new' />">マイページ</a>&nbsp;<%-- まだ未実装--%>
+                    <a href="<c:url value='/user/emoticons/new' />">マイページ</a>&nbsp;&nbsp;&nbsp;<%-- まだ未実装--%>
                     <a href="<c:url value='/logout' />">ログアウト</a>&nbsp;
                 </c:if>
                 <c:if test="${sessionScope.login_user == null}">
