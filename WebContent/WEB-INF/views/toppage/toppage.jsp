@@ -10,7 +10,7 @@
 
         <div id= "center">
             <h2>顔文字一覧</h2>
-
         </div>
+
     </c:param>
 </c:import>
