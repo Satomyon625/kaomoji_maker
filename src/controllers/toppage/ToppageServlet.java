@@ -1,13 +1,18 @@
 package controllers.toppage;
 
 import java.io.IOException;
+import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import models.Emoticon;
+import utils.DBUtil;
 
 /**
  * Servlet implementation class ToppageServlet
@@ -21,33 +26,35 @@ public class ToppageServlet extends HttpServlet {
      */
     public ToppageServlet() {
         super();
-
     }
 
     /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-      /*  EntityManager em = DBUtil.createEntityManager();
-        // 開くページ数を取得（デフォルトは1ページ目）
-        int page = 1;
+      EntityManager em = DBUtil.createEntityManager();
+
+        // ページネーション
+        int page;
         try {
             page = Integer.parseInt(request.getParameter("page"));
-        } catch(NumberFormatException e) {}
+        } catch(Exception e) {
+            page = 1;
+        }
 
-        // 最大件数と開始位置を指定してメッセージを取得
-        List<Mark> marks = em.createNamedQuery("getAllMarks", Mark.class)
+        // 全ての顔文字を取得
+        List<Emoticon> emoticons = em.createNamedQuery("getAllEmoticons", Emoticon.class)
                 .setFirstResult(20 * (page - 1))
                 .setMaxResults(20)
                 .getResultList();
-        // 全件数を取得
-        long marks_count = (long)em.createNamedQuery("getMarksCount", Long.class)
+
+        long emoticons_count = (long)em.createNamedQuery("getEmoticonsCount", Long.class)
                                       .getSingleResult();
 
         em.close();
 
-        request.setAttribute("marks", marks);
-        request.setAttribute("marks_count", marks_count);     // 全件数
+        request.setAttribute("emoticons", emoticons);
+        request.setAttribute("emoticons_count", emoticons_count);     // 全件数
         request.setAttribute("page", page);                   // ページ数
 
         // フラッシュメッセージがセッションスコープにセットされていたら
@@ -55,16 +62,9 @@ public class ToppageServlet extends HttpServlet {
         if(request.getSession().getAttribute("flush") != null) {
             request.setAttribute("flush", request.getSession().getAttribute("flush"));
             request.getSession().removeAttribute("flush");
-        }*/
-
-        if(request.getSession().getAttribute("flush") != null) {
-            request.setAttribute("flush", request.getSession().getAttribute("flush"));
-            request.getSession().removeAttribute("flush");
         }
-
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/toppage/toppage.jsp");
         rd.forward(request, response);
-
     }
 
 }
