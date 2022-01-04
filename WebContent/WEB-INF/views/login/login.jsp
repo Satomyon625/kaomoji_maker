@@ -15,17 +15,17 @@
        <div id= "center">
         <h2>ログイン</h2>
          <form method="post" action="<c:url value='/login' />">
-            <table>
+            <table class="u_form">
                 <tbody>
                     <tr>
-                        <th><label for="u_name">ユーザー名</label></th>
-                        <td><input type="text" name="u_name" size="40" maxlength="16" value="${u_name}" required/></td>
-                        <td></td>
+                        <th class="u_formh"><label for="u_name">ユーザー名</label></th>
+                        <td class="u_formd"><input type="text" name="u_name" size="40" maxlength="16" value="${u_name}" required/></td>
+                        <td class="u_formd"></td>
                     </tr>
                     <tr>
-                        <th><label for="pass">パスワード</label></th>
-                        <td><input type="password" name="pass" size="40" maxlength="20" required/></td>
-                        <td></td>
+                        <th class="u_formh"><label for="pass">パスワード</label></th>
+                        <td class="u_formd"><input type="password" name="pass" size="40" maxlength="20" required/></td>
+                        <td class="u_formd"></td>
                     </tr>
                 </tbody>
             </table>

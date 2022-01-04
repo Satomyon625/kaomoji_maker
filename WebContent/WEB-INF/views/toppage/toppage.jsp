@@ -39,8 +39,44 @@
                         <option value="like">いいね順</option>
                     </select>
                </form>
+               <br /><br />
 
+               <c:forEach var="emoticon" items="${emoticons}" varStatus="status">
+               <p class="list_line">
+                <table class="emoticon_list">
+                    <tbody>
+                        <tr class="row${status.count % 2}">
+                            <th class="emoticon">・${emoticon.emoticon}</th>
+                            <td class="emoticon_action"></td>
+                            <td class="emoticon_action">
+                            <c:if test="${sessionScope.login_user != null}">
+                                <input type="button" class="like_b" value="いいね" onclick="clickBtn1()" />&nbsp;
+                            </c:if>
+                            <input type="button" class="copy_b" value="コピー" onclick="clickBtn1()" />&nbsp;
+                            <c:if test="${sessionScope.login_user != null}">
+                                <button class="report_b" onclick="location.href='<c:url value='/user/emoticons/new' />'">通報</button>
+                            </c:if>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr class="hr1">
+               </c:forEach>
 
+        <div id="pagination">
+            （全 ${emoticons_count} 件）<br />
+            <c:forEach var="i" begin="1" end="${((emoticons_count - 1) / 20) + 1}" step="1">
+                <c:choose>
+                    <c:when test="${i == page}">
+                        <c:out value="${i}" />&nbsp;
+                    </c:when>
+                    <c:otherwise>
+                        <a href="<c:url value='/top?page=${i}' />"><c:out value="${i}" /></a>&nbsp;
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+        </div>
+        <br /><br/>
         </div>
 
     </c:param>

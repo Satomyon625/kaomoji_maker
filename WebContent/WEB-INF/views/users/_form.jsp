@@ -10,22 +10,22 @@
     </div>
 </c:if>
 
-                <table>
+                <table class="u_form">
                     <tbody>
                         <tr>
-                            <th><label for="u_name">ユーザー名</label></th>
-                            <td><input type="text" name="u_name" size="40" maxlength="16" value="${user.u_name}" required/></td>
-                            <td>※16文字まで(他ユーザとの重複不可)</td>
+                            <th class="u_formh"><label for="u_name">ユーザー名</label></th>
+                            <td class="u_formd"><input type="text" name="u_name" size="40" maxlength="16" value="${user.u_name}" required/></td>
+                            <td class="u_formd">※16文字まで(他ユーザとの重複不可)</td>
                         </tr>
                         <tr>
-                            <th><label for="pass">パスワード</label></th>
-                            <td><input type="password" name="pass" id="pass" size="40" minlength="8" maxlength="20" required/></td>
-                            <td>※半角英数字8文字以上20文字まで</td>
+                            <th class="u_formh"><label for="pass">パスワード</label></th>
+                            <td class="u_formd"><input type="password" name="pass" id="pass" size="40" minlength="8" maxlength="20" required/></td>
+                            <td class="u_formd">※半角英数字8文字以上20文字まで</td>
                         </tr>
                         <tr>
-                            <th><label for="c_pass">パスワード（確認用）</label></th>
-                            <td><input type="password" name="c_pass" id="c_pass" size="40" minlength="8" maxlength="20" oninput="CheckPass(this)" required/></td>
-                            <td></td>
+                            <th class="u_formh"><label for="c_pass">パスワード（確認用）</label></th>
+                            <td class="u_formd"><input type="password" name="c_pass" id="c_pass" size="40" minlength="8" maxlength="20" oninput="CheckPass(this)" required/></td>
+                            <td class="u_formd"></td>
                         </tr>
                     </tbody>
                 </table>

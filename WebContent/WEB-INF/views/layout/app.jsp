@@ -28,10 +28,16 @@
             </div>
 
             <div id="content">
+                <c:if test="${sessionScope.login_user != null }">
+                    <div id="user_name">
+                        ようこそ！&nbsp;<c:out value="${sessionScope.login_user.u_name }" />&nbsp;さん&nbsp;
+                    </div>
+                </c:if>
                 ${param.content}
             </div>
             <div id="footer">
-                ©️satomyo
+                by satomyo
+                <br /><br />
             </div>
         </div>
     </body>

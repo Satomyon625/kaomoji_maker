@@ -3,10 +3,10 @@
 <c:import url="../layout/app.jsp">
     <c:param name="content">
         <div id="center">
-        <h3>顔文字の登録が完了しました！</h3><br />
+        <h2>顔文字の登録が完了しました！</h2><br />
         <c:if test="${new_emoticon != null }">
             <div id="emoticon_success">
-                <c:out value="${new_emoticon }"></c:out>
+                <h2><c:out value="${new_emoticon }"></c:out></h2>
             </div>
         </c:if>
         <br /><br />
