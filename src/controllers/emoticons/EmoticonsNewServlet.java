@@ -32,7 +32,7 @@ public class EmoticonsNewServlet extends HttpServlet {
         request.setAttribute("_token", request.getSession().getId());
 
         Emoticon e = new Emoticon();
-        request.setAttribute("Emoticon", e);
+        request.setAttribute("emoticon", e);
 
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/emoticons/new.jsp");
         rd.forward(request, response);
