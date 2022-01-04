@@ -54,7 +54,7 @@
                             </c:if>
                             <input type="button" class="copy_b" value="コピー" onclick="clickBtn1()" />&nbsp;
                             <c:if test="${sessionScope.login_user != null}">
-                                <button class="report_b" onclick="location.href='<c:url value='/user/emoticons/new' />'">通報</button>
+                                <button class="report_b" onclick="location.href='<c:url value='/user/report' />'">通報</button>
                             </c:if>
                             </td>
                         </tr>
