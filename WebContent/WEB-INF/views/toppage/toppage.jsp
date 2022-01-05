@@ -46,13 +46,13 @@
                 <table class="emoticon_list">
                     <tbody>
                         <tr class="row${status.count % 2}">
-                            <th class="emoticon">・${emoticon.emoticon}</th>
+                            <th class="emoticon" id="emoticon">${emoticon.emoticon}</th> <!-- 顔文字を表示 -->
                             <td class="emoticon_action"></td>
                             <td class="emoticon_action">
                             <c:if test="${sessionScope.login_user != null}">
-                                <input type="button" class="like_b" value="いいね" onclick="clickBtn1()" />&nbsp;
+                                <input type="button" class="like_b" value="いいね" onclick="clickBtn_l()" />&nbsp;
                             </c:if>
-                            <input type="button" class="copy_b" value="コピー" onclick="clickBtn1()" />&nbsp;
+                            <input type="button" class="copy_b" id ="copy" value="コピー" onclick="ClickBtn_c('<c:out value='${emoticon.emoticon}' />')" />&nbsp;
                             <c:if test="${sessionScope.login_user != null}">
                                 <button class="report_b" onclick="location.href='<c:url value='/user/report' />'">通報</button>
                             </c:if>
@@ -62,6 +62,26 @@
                 </table>
                 <hr class="hr1">
                </c:forEach>
+
+        <script>
+        function ClickBtn_c(str) {
+            var listener = function(e){
+
+                e.clipboardData.setData("text/plain" , str);
+                // 本来のイベントをキャンセル
+                e.preventDefault();
+                // 終わったら一応削除
+                document.removeEventListener("copy", listener);
+            }
+
+            // コピーのイベントが発生したときに、クリップボードに書き込むようにしておく
+            document.addEventListener("copy" , listener);
+
+            // コピー
+            document.execCommand("copy");
+
+            }
+        </script>
 
         <div id="pagination">
             （全 ${emoticons_count} 件）<br />
