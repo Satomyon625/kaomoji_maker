@@ -78,7 +78,7 @@ public class LoginServlet extends HttpServlet {
             }
         }
 
-        if(!check_result) {
+        if(!check_result) {//登録されてない（不一致）
             request.setAttribute("_token", request.getSession().getId());
             request.setAttribute("hasError", true); //エラー発生
             request.setAttribute("u_name", u_name);

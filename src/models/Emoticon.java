@@ -27,6 +27,10 @@ import javax.persistence.Table;
             name = "getMyAllEmoticons",
             query = "SELECT e FROM Emoticon AS e WHERE e.create_user = :create_user ORDER BY e.id DESC"
         ),
+    @NamedQuery(
+            name = "getCopy_numberCount",
+            query = "SELECT e FROM Emoticon AS e WHERE e.id = :id"
+        ),
         @NamedQuery(
             name = "getMyEmoticonsCount",
             query = "SELECT COUNT(e) FROM Emoticon AS e WHERE e.create_user = :create_user"
