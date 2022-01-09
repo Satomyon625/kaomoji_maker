@@ -32,14 +32,15 @@ public class LikeServlet extends HttpServlet {
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String likeId = request.getParameter("like");//作成画面から遷移以外は不正アクセス
+            String likeId = request.getParameter("like");
             EntityManager em = DBUtil.createEntityManager();
 
             Like l = new Like();
 
             l.setEmoticon_id(Integer.parseInt(likeId));
-           // User user = (User)request.getSession().getAttribute("login_user");
-            l.setLike_user((User)request.getSession().getAttribute("login_user"));
+            User user = (User)request.getSession().getAttribute("login_user");
+
+            l.setLike_user(user.getU_name());
 
             Timestamp currentTime = new Timestamp(System.currentTimeMillis());
             l.setCreated_at(currentTime);
@@ -49,8 +50,6 @@ public class LikeServlet extends HttpServlet {
             em.getTransaction().commit();
 
             em.close();
-
-
 
             request.getSession().setAttribute("flush", "いいねしました。");
             response.sendRedirect(request.getContextPath() + "/top");
