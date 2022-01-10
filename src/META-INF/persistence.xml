@@ -5,6 +5,7 @@
 		<class>models.User</class>
 		<class>models.Emoticon</class>
 		<class>models.Like</class>
+		<class>models.Report</class>
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/kaomoji_maker?useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf8&amp;allowPublicKeyRetrieval=true"/>

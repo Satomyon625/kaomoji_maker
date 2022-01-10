@@ -16,6 +16,10 @@ import javax.persistence.Table;
     @NamedQuery(
             name = "getMyAllLikes",
             query = "SELECT l FROM Like AS l WHERE l.like_user = :like_user ORDER BY l.id DESC"
+            ),
+    @NamedQuery(
+            name = "getLikeCountByEmoticon_idAndLike_user",
+            query = "SELECT COUNT(l) FROM Like AS l WHERE l.emoticon_id = :emoticon_id AND l.like_user = :like_user"
             )
 })
 @Entity
