@@ -33,6 +33,11 @@ public class ToppageServlet extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       EntityManager em = DBUtil.createEntityManager();
+      String sort= "getAllEmoticons";//初期値
+
+      if(request.getSession().getAttribute("emoticonsSort") != null) {
+         sort = (String) request.getSession().getAttribute("emoticonsSort");//並び替えを適用（２ページ目以降も）
+      }
 
         // ページネーション
         int page;
@@ -43,7 +48,7 @@ public class ToppageServlet extends HttpServlet {
         }
 
         // 全ての顔文字を取得
-        List<Emoticon> emoticons = em.createNamedQuery("getAllEmoticons", Emoticon.class)
+        List<Emoticon> emoticons = em.createNamedQuery(sort, Emoticon.class)
                 .setFirstResult(20 * (page - 1))
                 .setMaxResults(20)
                 .getResultList();
@@ -53,6 +58,62 @@ public class ToppageServlet extends HttpServlet {
 
         em.close();
 
+        String searchKeyword = "";
+        if (request.getSession().getAttribute("searchKeyword") != null) {
+            searchKeyword = (String) request.getSession().getAttribute("searchKeyword");
+        }
+        request.setAttribute("searchKeyword", searchKeyword);
+        request.setAttribute("emoticonsSort",sort);//並び替え
+
+        request.setAttribute("emoticons", emoticons);
+        request.setAttribute("emoticons_count", emoticons_count);     // 全件数
+        request.setAttribute("page", page);                   // ページ数
+
+        // フラッシュメッセージがセッションスコープにセットされていたら
+        // リクエストスコープに保存する（セッションスコープからは削除）
+        if(request.getSession().getAttribute("flush") != null) {
+            request.setAttribute("flush", request.getSession().getAttribute("flush"));
+            request.getSession().removeAttribute("flush");
+        }
+        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/toppage/toppage.jsp");
+        rd.forward(request, response);
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String sort = request.getParameter("emoticons_sort");//並び替えの情報を取得（JPQL文）
+
+        if (sort == null) {
+            sort = (String) request.getSession().getAttribute("emoticonsSort");//並び替えを適用（２ページ目以降も）
+        } else {
+            request.getSession().setAttribute("emoticonsSort", sort);
+        }
+
+        String searchKeyword = request.getParameter("search_keyword");
+        request.getSession().setAttribute("searchKeyword", searchKeyword);
+
+        EntityManager em = DBUtil.createEntityManager();
+     // ページネーション
+        int page;
+        try {
+            page = Integer.parseInt(request.getParameter("page"));
+        } catch(Exception e) {
+            page = 1;
+        }
+
+        // 全ての顔文字を取得
+        List<Emoticon> emoticons = em.createNamedQuery(sort, Emoticon.class)//JPQLとして検索
+                .setFirstResult(20 * (page - 1))
+                .setMaxResults(20)
+                .getResultList();
+
+        long emoticons_count = (long)em.createNamedQuery("getEmoticonsCount", Long.class)
+                                      .getSingleResult();
+
+        em.close();
+
+
+        request.setAttribute("searchKeyword", searchKeyword);
+        request.setAttribute("emoticonsSort", sort);//並び替えの選択状態を保持
         request.setAttribute("emoticons", emoticons);
         request.setAttribute("emoticons_count", emoticons_count);     // 全件数
         request.setAttribute("page", page);                   // ページ数

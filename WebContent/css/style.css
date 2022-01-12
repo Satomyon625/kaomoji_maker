@@ -161,3 +161,48 @@ button {
     color: #721c24;
     background-color: #f8d7da;
 }
+
+table.reports_list {
+    width: 60%;
+    table-layout: fixed;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid #c9c9c9;
+}
+table.reports_list .report_no {
+    width: 30px;
+    padding: 0px;
+    text-align:right;
+    border: 1px solid #c9c9c9;
+}
+
+table.reports_list .report {
+    width: 39%;
+    padding: 10px 2%;
+    text-align:left;
+    border: 1px solid #c9c9c9;
+}
+
+table.reports_list .report_action {
+    width: 40px;
+    padding: 0px;
+    text-align:center;
+    border: 1px solid #c9c9c9;
+}
+
+table.reports_detail {
+    width: 60%;
+    table-layout: fixed;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid #c9c9c9;
+}
+table.reports_detail .report {
+    width: auto;
+    padding: 0px;
+    text-align:left;
+    border: 1px solid #c9c9c9;
+}
+table.reports_detail .report input[type="text"] {
+    width: 99%;
+}

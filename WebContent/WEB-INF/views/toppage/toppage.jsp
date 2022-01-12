@@ -12,9 +12,10 @@
         <div id= "center">
             <h2>顔文字一覧</h2>
             <!-- 検索機能、別途フォーム用JSP作成無しで検証 -->
+            <div style="display:inline-flex">
                 <form method="POST" id="search" name="name" action="<c:url value='/top' />">
                    <label for="category_search">カテゴリ検索：</label>&nbsp;
-                   <input type="search" autocomplete="on" list="list"/>
+                   <input type="search" autocomplete="on" name="search_keyword" value="<c:out value='${searchKeyword}' />"/>
                    <!-- 検索候補 -->
                    <datalist id="list">
                     <option value="嬉しい">
@@ -28,18 +29,17 @@
                    </datalist>
 
                    <input type="hidden" name="_token" value="${_token}" />
-                   <button type="submit">検索</button>&nbsp;
-
-                <!-- 並べ替え表示 検証段階-->
-
+                   <button onclick="submit(this.form)">検索</button>&nbsp;
+                <!-- 並べ替え表示 -->
                     <label for="emoticons_sort">並べ替え表示：</label>&nbsp;
-                    <select name="emoticons_sort" onchange="submit(this.form)">
-                        <option value="new">新着順</option>
-                        <option value="old">古い順</option>
-                        <option value="popular">人気順(累計コピー数)</option>
-                        <option value="like">いいね順</option>
+                    <select name="emoticons_sort" id = "emoticons_sort" onchange="submit(this.form)">
+                        <option value="getAllEmoticons" <c:if test="${emoticonsSort == 'getAllEmoticons'}">selected</c:if>>新着順</option>
+                        <option value="getAllEmoticonsByOld" <c:if test="${emoticonsSort == 'getAllEmoticonsByOld'}">selected</c:if>>古い順</option>
+                        <option value="getAllEmoticonsByCopy" <c:if test="${emoticonsSort == 'getAllEmoticonsByCopy'}">selected</c:if>>人気順(累計コピー数)</option>
+                        <option value="getAllEmoticonsByLike" <c:if test="${emoticonsSort == 'getAllEmoticonsByLike'}">selected</c:if>>いいね順</option>
                     </select>
                </form>
+               </div>
                <br /><br />
 
                <c:forEach var="emoticon" items="${emoticons}" varStatus="status">
@@ -71,6 +71,7 @@
                </c:forEach>
 
         <script>
+
         function ClickBtn_c(str) {//クリップボードにコピー
             var listener = function(e){
 

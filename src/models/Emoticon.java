@@ -17,7 +17,19 @@ import javax.persistence.Table;
 @NamedQueries({
     @NamedQuery(
             name = "getAllEmoticons",
-            query = "SELECT e FROM Emoticon AS e ORDER BY e.id DESC"
+            query = "SELECT e FROM Emoticon AS e ORDER BY e.id DESC"//デフォルト、新着順
+            ),
+    @NamedQuery(
+            name = "getAllEmoticonsByOld",
+            query = "SELECT e FROM Emoticon AS e ORDER BY e.id ASC"//ソート、古い順
+            ),
+    @NamedQuery(
+            name = "getAllEmoticonsByCopy",
+            query = "SELECT e FROM Emoticon AS e ORDER BY e.copy_number DESC"//ソート、コピー順
+            ),
+    @NamedQuery(
+            name = "getAllEmoticonsByLike",
+            query = "SELECT e FROM Emoticon AS e ORDER BY e.like_number DESC"//ソート、いいね順
             ),
     @NamedQuery(
             name = "getEmoticonsCount",
