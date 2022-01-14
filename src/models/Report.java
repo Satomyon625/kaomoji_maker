@@ -23,7 +23,7 @@ import javax.persistence.Table;
             ),
     @NamedQuery(
             name = "getAllReportsByNotDeal_flag",
-            query = "SELECT r FROM Report AS r WHERE r.deal_flag = :deal_flag ORDER BY r.id DESC"//未対応の分だけ取得
+            query = "SELECT r FROM Report AS r WHERE r.deal_flag = false ORDER BY r.id DESC"//未対応の分だけ取得
             ),
     @NamedQuery(
             name = "getAllReportsCountByNotDeal_flag",

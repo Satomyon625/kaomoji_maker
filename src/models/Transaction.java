@@ -13,22 +13,27 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-@Table(name = "categories")//顔文字カテゴリマスタ
+@Table(name = "ctransaction")//顔文字カテゴリトランザクション
 @NamedQueries({
     @NamedQuery(
-            name = "getCategoryName",
-            query = "SELECT c FROM Category AS c WHERE c.category = :category"//カテゴリの重複をチェック
+            name = "SearchCategoryByName",
+            query = "SELECT t FROM Transaction AS t WHERE t.category_id = :category_id"//カテゴリ検索(カテゴリ名を取り出してそのidを取得して検索)
             )
 })
 @Entity
-public class Category {
+public class Transaction {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "category", length = 64, nullable = false, unique = true)//カテゴリ名、重複不可
-    private String category;
+    @ManyToOne
+    @JoinColumn(name = "emoticon_id")//顔文字id
+    private Emoticon emoticon_id;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")//カテゴリid
+    private Category category_id;
 
     @ManyToOne
     @JoinColumn(name = "create_user", nullable = false)
@@ -52,12 +57,20 @@ public class Category {
         this.id = id;
     }
 
-    public String getCategory() {
-        return category;
+    public Emoticon getEmoticon_id() {
+        return emoticon_id;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setEmoticon_id(Emoticon emoticon_id) {
+        this.emoticon_id = emoticon_id;
+    }
+
+    public Category getCategory_id() {
+        return category_id;
+    }
+
+    public void setCategory_id(Category category_id) {
+        this.category_id = category_id;
     }
 
     public User getCreate_user() {
@@ -91,6 +104,5 @@ public class Category {
     public void setUpdated_at(Timestamp updated_at) {
         this.updated_at = updated_at;
     }
-
 
 }
