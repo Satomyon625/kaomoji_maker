@@ -12,52 +12,25 @@
 </c:if>
 <label for="emoticon">登録する顔文字を入力↓</label><br />
 <input type="text" name="emoticon" value="${emoticon.emoticon}" size="60" required/>&nbsp;
-<input type="hidden" name="_token" value="${_token}" />
+
 <button type="submit">登録</button><br />
 <p><span style="color:red">注意：文字化けの恐れがあるため、環境依存文字のご使用はお控えいただきますようお願いしますm(_ _)m</span></p>
 <br /><br />
 
 <label for="category">追加するカテゴリ↓</label><br />
-<input id="happy" type="checkbox" name="category" value="嬉しい"><label for="happy">嬉しい</label>
-<input id="sad" type="checkbox" name="category" value="悲しい"><label for="sad">悲しい</label>
-<input id="smile" type="checkbox" name="category" value="笑う"><label for="smile">笑う</label>
-<input id="cute" type="checkbox" name="category" value="可愛い"><label for="cute">可愛い</label>
+<input id="happy" type="checkbox" id="嬉しい" name="category_c" value="1"<c:if test="${category.id == 1}">checked</c:if>><label for="嬉しい">嬉しい</label>
+<input id="sad" type="checkbox" id="悲しい" name="category_c" value="2"<c:if test="${category.id == 2}">checked</c:if>><label for="悲しい">悲しい</label>
+<input id="smile" type="checkbox" id="笑う" name="category_c" value="3"<c:if test="${category.id == 3}">checked</c:if>><label for="笑う">笑う</label>
+<input id="cute" type="checkbox" id="可愛い" name="category_c" value="4"<c:if test="${category.id == 4}">checked</c:if>><label for="可愛い">可愛い</label>
 <br />
-<input id="angry" type="checkbox" name="category" value="怒る"><label for="angry">怒る</label>
-<input id="surprised" type="checkbox" name="category" value="驚く"><label for="surprised">驚く</label>
-<input id="sleep" type="checkbox" name="category" value="寝る"><label for="sleep">寝る</label>
-<input id="greeting" type="checkbox" name="category" value="挨拶"><label for="greeting">挨拶</label>
+<input id="angry" type="checkbox" id="怒る" name="category_c" value="5"<c:if test="${category.id == 5}">checked</c:if>><label for="怒る">怒る</label>
+<input id="surprised" type="checkbox" id="驚く" name="category_c" value="6"<c:if test="${category.id == 6}">checked</c:if>><label for="驚く">驚く</label>
+<input id="sleep" type="checkbox" id="寝る" name="category_c" value="7"<c:if test="${category.id == 7}">checked</c:if>><label for="寝る">寝る</label>
+<input id="greeting" type="checkbox" id="挨拶" name="category_c" value="8"<c:if test="${category.id == 8}">checked</c:if>><label for="挨拶">挨拶</label>
 <br /><br />
 
-<label for="other_category">その他のカテゴリ(追加)</label><br />
-<input type="text" name="other_category">&nbsp;
-<input type="button" value="+ 追加" onclick="clickBtn1()" /><br /><br />
-<div id="add1"></div>
-
-<script>
-function clickBtn1() {
-    const add1 = document.getElementById("add1");
-    if(!add1.hasChildNodes()){
-        const input1 = document.createElement("input");
-        input1.setAttribute("type", "text");
-        input1.setAttribute("name", "other_category");
-        add1.appendChild(input1);
-
-        const input2 = document.createElement("input");
-        input2.setAttribute("type", "button");
-        input2.setAttribute("value", "+ 追加");
-        input2.setAttribute("onclick", "clickBtn1()");
-        add1.appendChild(input2);
-
-        const input3 = document.createElement("br");
-        add1.appendChild(input3);
-
-        const input4 = document.createElement("br");
-        add1.appendChild(input4);
-
-        const input5 = document.createElement("div");
-        input1.setAttribute("id", "add1");
-        add1.appendChild(input5);
-    }
-}
-</script>
+<label for="other_category">その他のカテゴリ(追加)※３つまで</label><br />
+<input type="text" name="category" value="${tarnsaction.categry_id}">
+<input type="text" name="category" value="${tarnsaction.categry_id}">
+<input type="text" name="category" value="${tarnsaction.categry_id}">
+<input type="hidden" name="_token" value="${_token}" />

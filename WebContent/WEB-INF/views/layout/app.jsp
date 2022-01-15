@@ -14,11 +14,14 @@
                 <div id="header_title">
                     <h1>顔文字メーカー</h1>&nbsp;&nbsp;&nbsp;
                 </div>
-                <div id="header_menu">
+                <div id="header_menu" style="display:inline-flex">
                     <a href="<c:url value='/top' />">顔文字一覧</a>&nbsp;&nbsp;&nbsp;
                 <c:if test="${sessionScope.login_user != null}">
                     <a href="<c:url value='/user/emoticons/new' />">顔文字作成</a>&nbsp;
-                    <a href="<c:url value='/user/emoticons/new' />">マイページ</a>&nbsp;&nbsp;&nbsp;<%-- まだ未実装--%>
+                    <label for="mypage"><a>マイページ</a></label>&nbsp;&nbsp;&nbsp;
+                    <select name="mypage" id="mypage">
+                        <option ></option>
+                    </select>
                     <a href="<c:url value='/logout' />">ログアウト</a>&nbsp;
                 </c:if>
                 <c:if test="${sessionScope.login_user == null}">
