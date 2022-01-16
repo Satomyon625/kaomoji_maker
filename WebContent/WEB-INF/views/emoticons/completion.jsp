@@ -10,7 +10,21 @@
             </div>
         </c:if>
         <br /><br />
-        <button onclick="location.href='<c:url value='/user/emoticons/new' />'">新たに顔文字追加</button>
+        <button onclick="location.href='<c:url value='/user/emoticons/new' />'">新たに顔文字追加</button><br/><br/>
+        <button class="tweet_b" style="color:white" onclick="ClickBtn_t('<c:out value='${new_emoticon}' />')" >Twitterにシェアする！</button>
          </div>
     </c:param>
 </c:import>
+
+<script>
+function ClickBtn_t(str){
+    document.location.href = "https://twitter.com/intent/tweet?";
+    const baseUrl = 'https://twitter.com/intent/tweet?';
+    const text = ['text', '顔文字を作成したよ！ 作成した顔文字 ->',str];
+    const hashtags = ['hashtags', ['顔文字メーカー'].join(',')];
+    const url = ['url', location.href];
+    const via = ['via', 'tos'];
+    const query = new URLSearchParams([text, hashtags, url, via]).toString();
+    const shareUrl = '${baseUrl}${query}';
+}
+</script>

@@ -41,12 +41,32 @@ import javax.persistence.Table;
         ),
     @NamedQuery(
             name = "getCopy_numberCount",
-            query = "SELECT e FROM Emoticon AS e WHERE e.id = :id"
+            query = "SELECT COUNT(e) FROM Emoticon AS e WHERE e.id = :id"
         ),
         @NamedQuery(
             name = "getMyEmoticonsCount",
             query = "SELECT COUNT(e) FROM Emoticon AS e WHERE e.create_user = :create_user"
-        )
+        ),
+        @NamedQuery(
+                name = "getEmoticonsByCategoryId",
+                query = "SELECT e FROM Emoticon e, Transaction t WHERE e = t.emoticon_id AND t.category_id = :category_id ORDER BY e.id DESC"//検索したカテゴリidを条件にトランザクションテーブルとidを結合し顔文字を取得（新着順デフォルト）
+            ),
+        @NamedQuery(
+                name = "getEmoticonsByCategoryIdAndOld",
+                query = "SELECT e FROM Emoticon e, Transaction t WHERE e = t.emoticon_id AND t.category_id = :category_id ORDER BY e.id ASC"//検索したカテゴリidを条件にトランザクションテーブルとidを結合し顔文字を取得（古い順）
+            ),
+        @NamedQuery(
+                name = "getEmoticonsByCategoryIdAndCopy",
+                query = "SELECT e FROM Emoticon e, Transaction t WHERE e = t.emoticon_id AND t.category_id = :category_id ORDER BY e.copy_number DESC"//検索したカテゴリidを条件にトランザクションテーブルとidを結合し顔文字を取得（コピー順）
+            ),
+        @NamedQuery(
+                name = "getEmoticonsByCategoryIdAndLike",
+                query = "SELECT e FROM Emoticon e, Transaction t WHERE e = t.emoticon_id AND t.category_id = :category_id ORDER BY e.like_number DESC"//検索したカテゴリidを条件にトランザクションテーブルとidを結合し顔文字を取得（いいね順）
+            ),
+        @NamedQuery(
+                name = "getEmoticonsByCategoryIdCount",
+                query = "SELECT COUNT(e) FROM Emoticon e, Transaction t WHERE e = t.emoticon_id AND t.category_id = :category_id"//検索したカテゴリidを条件にトランザクションテーブルとidを結合し顔文字を取得
+            )
 })
 @Entity
 public class Emoticon {

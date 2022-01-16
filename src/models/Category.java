@@ -17,7 +17,7 @@ import javax.persistence.Table;
 @NamedQueries({
     @NamedQuery(
             name = "getCategoryName",
-            query = "SELECT c FROM Category AS c WHERE c.category = :category"//カテゴリの重複をチェック
+            query = "SELECT c FROM Category AS c WHERE c.category = :category"//カテゴリの重複をチェック、検索ワードに一致するカテゴリ名のid取得
             )
 })
 @Entity

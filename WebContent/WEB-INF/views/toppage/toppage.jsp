@@ -28,8 +28,8 @@
                     <option value="挨拶">
                    </datalist>
 
-                   <input type="hidden" name="_token" value="${_token}" />
-                   <button onclick="submit(this.form)">検索</button>&nbsp;
+
+                   <button  name="search_keyword" onclick="submit(this.form)">検索</button>&nbsp;
                 <!-- 並べ替え表示 -->
                     <label for="emoticons_sort">並べ替え表示：</label>&nbsp;
                     <select name="emoticons_sort" id = "emoticons_sort" onchange="submit(this.form)">

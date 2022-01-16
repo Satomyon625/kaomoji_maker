@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import models.Category;
 import models.Emoticon;
 import utils.DBUtil;
 
@@ -35,7 +36,7 @@ public class ToppageServlet extends HttpServlet {
       EntityManager em = DBUtil.createEntityManager();
       String sort= "getAllEmoticons";//初期値
 
-      if(request.getSession().getAttribute("emoticonsSort") != null) {
+      if(request.getSession().getAttribute("emoticonsSort") != null) {//並び替え情報を保持してた場合(並び替えしてページネーションした)
          sort = (String) request.getSession().getAttribute("emoticonsSort");//並び替えを適用（２ページ目以降も）
       }
 
@@ -56,13 +57,38 @@ public class ToppageServlet extends HttpServlet {
         long emoticons_count = (long)em.createNamedQuery("getEmoticonsCount", Long.class)
                                       .getSingleResult();
 
-        em.close();
+
 
         String searchKeyword = "";
-        if (request.getSession().getAttribute("searchKeyword") != null) {
-            searchKeyword = (String) request.getSession().getAttribute("searchKeyword");
+        if (request.getSession().getAttribute("searchKeyword") != null) {//カテゴリ検索を保持してたら
+            searchKeyword = (String) request.getSession().getAttribute("searchKeyword");//検索ワードを格納
+            boolean notEntryFlg = true;
+            Category c = new Category();
+
+            try {
+            //検索ワードをカテゴリ名とし該当するidを取得
+
+              c  = (Category)em.createNamedQuery("getCategoryName", Category.class)
+                        .setParameter("category",searchKeyword)
+                        .getSingleResult();
+               }catch(Exception ex) {//ない場合
+                   notEntryFlg = false;
+            }
+            if(notEntryFlg) {//ヒットした場合
+
+             emoticons = em.createNamedQuery("getEmoticonsByCategoryId", Emoticon.class)//カテゴリに該当する顔文字だけ取得
+                    .setParameter("category_id", c)
+                    .setFirstResult(20 * (page - 1))
+                    .setMaxResults(20)
+                    .getResultList();
+
+             emoticons_count = (long)em.createNamedQuery("getEmoticonsByCategoryIdCount", Long.class)//その件数取得
+                                          .getSingleResult();
+            }
         }
-        request.setAttribute("searchKeyword", searchKeyword);
+        em.close();
+
+        request.setAttribute("searchKeyword", searchKeyword);//検索
         request.setAttribute("emoticonsSort",sort);//並び替え
 
         request.setAttribute("emoticons", emoticons);
@@ -82,14 +108,11 @@ public class ToppageServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String sort = request.getParameter("emoticons_sort");//並び替えの情報を取得（JPQL文）
 
-        if (sort == null) {
-            sort = (String) request.getSession().getAttribute("emoticonsSort");//並び替えを適用（２ページ目以降も）
+        if (sort == null) {//選択しなかった場合
+            sort = (String) request.getSession().getAttribute("emoticonsSort");//元のを適用（２ページ目以降も）
         } else {
-            request.getSession().setAttribute("emoticonsSort", sort);
+            request.getSession().setAttribute("emoticonsSort", sort);//選択してたらそちらをセット
         }
-
-        String searchKeyword = request.getParameter("search_keyword");
-        request.getSession().setAttribute("searchKeyword", searchKeyword);
 
         EntityManager em = DBUtil.createEntityManager();
      // ページネーション
@@ -101,13 +124,43 @@ public class ToppageServlet extends HttpServlet {
         }
 
         // 全ての顔文字を取得
-        List<Emoticon> emoticons = em.createNamedQuery(sort, Emoticon.class)//JPQLとして検索
+        List<Emoticon> emoticons = em.createNamedQuery(sort, Emoticon.class)//JPQLとして検索並び替え
                 .setFirstResult(20 * (page - 1))
                 .setMaxResults(20)
                 .getResultList();
 
         long emoticons_count = (long)em.createNamedQuery("getEmoticonsCount", Long.class)
                                       .getSingleResult();
+
+        String searchKeyword = request.getParameter("search_keyword");//検索、カテゴリキーワードを取得
+
+        if(searchKeyword != null) {//検索ワード入力してた場合
+
+            boolean notEntryFlg = true;
+            Category c = new Category();
+
+            try {
+            //検索ワードをカテゴリ名とし該当するidを取得
+
+            c = (Category)em.createNamedQuery("getCategoryName", Category.class)
+                    .setParameter("category",searchKeyword)
+                    .getSingleResult();
+            }catch(Exception ex){
+                notEntryFlg = false;
+            }
+            if(notEntryFlg) {//ヒットした場合
+             emoticons = em.createNamedQuery("getEmoticonsByCategoryId", Emoticon.class)//カテゴリに該当する顔文字だけ取得
+                    .setParameter("category_id", c)
+                    .setFirstResult(20 * (page - 1))
+                    .setMaxResults(20)
+                    .getResultList();
+
+             emoticons_count = (long)em.createNamedQuery("getEmoticonsByCategoryIdCount", Long.class)//その件数取得
+                                          .setParameter("category_id", c)
+                                          .getSingleResult();
+            }
+
+        }
 
         em.close();
 
