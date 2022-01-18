@@ -34,11 +34,16 @@ public class ToppageServlet extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       EntityManager em = DBUtil.createEntityManager();
-      String sort= "getAllEmoticons";//初期値
 
+      String sort= "getAllEmoticons";//初期値
       if(request.getSession().getAttribute("emoticonsSort") != null) {//並び替え情報を保持してた場合(並び替えしてページネーションした)
          sort = (String) request.getSession().getAttribute("emoticonsSort");//並び替えを適用（２ページ目以降も）
       }
+
+      String searchKeyword = "";//初期値
+        if (request.getSession().getAttribute("searchKeyword") != null) {//カテゴリ検索を保持してたら
+            searchKeyword = (String) request.getSession().getAttribute("searchKeyword");//検索ワードを格納
+        }
 
         // ページネーション
         int page;
@@ -48,51 +53,97 @@ public class ToppageServlet extends HttpServlet {
             page = 1;
         }
 
-        // 全ての顔文字を取得
-        List<Emoticon> emoticons = em.createNamedQuery(sort, Emoticon.class)
-                .setFirstResult(20 * (page - 1))
-                .setMaxResults(20)
-                .getResultList();
+        boolean notEntryFlg = false;
+        if(!searchKeyword.equals("")) {//検索ワード入力してた場合
 
-        long emoticons_count = (long)em.createNamedQuery("getEmoticonsCount", Long.class)
-                                      .getSingleResult();
-
-
-
-        String searchKeyword = "";
-        if (request.getSession().getAttribute("searchKeyword") != null) {//カテゴリ検索を保持してたら
-            searchKeyword = (String) request.getSession().getAttribute("searchKeyword");//検索ワードを格納
-            boolean notEntryFlg = true;
+            notEntryFlg = true;
             Category c = new Category();
 
             try {
             //検索ワードをカテゴリ名とし該当するidを取得
 
-              c  = (Category)em.createNamedQuery("getCategoryName", Category.class)
-                        .setParameter("category",searchKeyword)
-                        .getSingleResult();
-               }catch(Exception ex) {//ない場合
-                   notEntryFlg = false;
+            c = (Category)em.createNamedQuery("getCategoryName", Category.class)
+                    .setParameter("category",searchKeyword)
+                    .getSingleResult();
+            }catch(Exception ex){
+                notEntryFlg = false;
             }
-            if(notEntryFlg) {//ヒットした場合
+            if(notEntryFlg) {//カテゴリidヒットした場合
+                sort = request.getParameter("emoticons_sort");//並び替えの情報を取得（JPQL文）
+                if(sort == null || "getAllEmoticons".equals(sort) || "getEmoticonsByCategoryId".equals(sort)) {//新着順、もしくは情報ない
+                    sort = "getEmoticonsByCategoryId";//カテゴリidがヒットしたので対応するよう格納
+                } else if("getAllEmoticonsByOld".equals(sort) || "getEmoticonsByCategoryIdAndOld".equals(sort)) {//古い順
+                    sort = "getEmoticonsByCategoryIdAndOld";
+                } else if("getAllEmoticonsByCopy".equals(sort) || "getEmoticonsByCategoryIdAndCopy".equals(sort)) {//コピー順
+                    sort = "getEmoticonsByCategoryIdAndCopy";
+                } else if("getAllEmoticonsByLike".equals(sort) || "getEmoticonsByCategoryIdAndLike".equals(sort)){//いいね順
+                    sort = "getEmoticonsByCategoryIdAndLike";
+                }
 
-             emoticons = em.createNamedQuery("getEmoticonsByCategoryId", Emoticon.class)//カテゴリに該当する顔文字だけ取得
+                    List<Emoticon> emoticons = em.createNamedQuery(sort, Emoticon.class)//カテゴリに該当する顔文字だけ取得
                     .setParameter("category_id", c)
                     .setFirstResult(20 * (page - 1))
                     .setMaxResults(20)
                     .getResultList();
 
-             emoticons_count = (long)em.createNamedQuery("getEmoticonsByCategoryIdCount", Long.class)//その件数取得
+                    long emoticons_count = (long)em.createNamedQuery("getEmoticonsByCategoryIdCount", Long.class)//その件数取得
+                                          .setParameter("category_id", c)
                                           .getSingleResult();
+
+                    request.setAttribute("emoticons", emoticons);
+                    request.setAttribute("emoticons_count", emoticons_count);     // 全件数
+
+                }else {//なかった場合、全表示
+                    sort = request.getParameter("emoticons_sort");//並び替えの情報を取得（JPQL文）
+                    if(sort == null || "getAllEmoticons".equals(sort) || "getEmoticonsByCategoryId".equals(sort)) {//新着順、もしくは情報ない
+                        sort = "getAllEmoticons";//カテゴリidがヒットしてないので全件表示格納
+                    } else if("getAllEmoticonsByOld".equals(sort) || "getEmoticonsByCategoryIdAndOld".equals(sort)) {//古い順
+                        sort = "getAllEmoticonsByOld";
+                    } else if("getAllEmoticonsByCopy".equals(sort) || "getEmoticonsByCategoryIdAndCopy".equals(sort)) {//コピー順
+                        sort = "getAllEmoticonsByCopy";
+                    } else if("getAllEmoticonsByLike".equals(sort) || "getEmoticonsByCategoryIdAndLike".equals(sort)){//いいね順
+                        sort = "getAllEmoticonsByLike";
+                    }
+                    List<Emoticon> emoticons = em.createNamedQuery(sort, Emoticon.class)
+                            .setFirstResult(20 * (page - 1))
+                            .setMaxResults(20)
+                            .getResultList();
+
+                    long emoticons_count = (long)em.createNamedQuery("getEmoticonsCount", Long.class)//全件表示
+                                                  .getSingleResult();
+
+                    request.setAttribute("emoticons", emoticons);
+                    request.setAttribute("emoticons_count", emoticons_count);     // 全件数
+
             }
+
+        }else {//検索ワードない場合、全件、ソートのみ
+            sort = request.getParameter("emoticons_sort");//並び替えの情報を取得（JPQL文）
+            if(sort == null || "getAllEmoticons".equals(sort) || "getEmoticonsByCategoryId".equals(sort)) {//新着順、もしくは情報ない
+                sort = "getAllEmoticons";//カテゴリidがヒットしてないので全件表示格納
+            } else if("getAllEmoticonsByOld".equals(sort) || "getEmoticonsByCategoryIdAndOld".equals(sort)) {//古い順
+                sort = "getAllEmoticonsByOld";
+            } else if("getAllEmoticonsByCopy".equals(sort) || "getEmoticonsByCategoryIdAndCopy".equals(sort)) {//コピー順
+                sort = "getAllEmoticonsByCopy";
+            } else if("getAllEmoticonsByLike".equals(sort) || "getEmoticonsByCategoryIdAndLike".equals(sort)){//いいね順
+                sort = "getAllEmoticonsByLike";
+            }
+            List<Emoticon> emoticons = em.createNamedQuery(sort, Emoticon.class)
+                    .setFirstResult(20 * (page - 1))
+                    .setMaxResults(20)
+                    .getResultList();
+
+            long emoticons_count = (long)em.createNamedQuery("getEmoticonsCount", Long.class)//全件表示
+                                          .getSingleResult();
+
+            request.setAttribute("emoticons", emoticons);
+            request.setAttribute("emoticons_count", emoticons_count);     // 全件数
         }
+
         em.close();
 
         request.setAttribute("searchKeyword", searchKeyword);//検索
         request.setAttribute("emoticonsSort",sort);//並び替え
-
-        request.setAttribute("emoticons", emoticons);
-        request.setAttribute("emoticons_count", emoticons_count);     // 全件数
         request.setAttribute("page", page);                   // ページ数
 
         // フラッシュメッセージがセッションスコープにセットされていたら
@@ -106,13 +157,6 @@ public class ToppageServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String sort = request.getParameter("emoticons_sort");//並び替えの情報を取得（JPQL文）
-
-        if (sort == null) {//選択しなかった場合
-            sort = (String) request.getSession().getAttribute("emoticonsSort");//元のを適用（２ページ目以降も）
-        } else {
-            request.getSession().setAttribute("emoticonsSort", sort);//選択してたらそちらをセット
-        }
 
         EntityManager em = DBUtil.createEntityManager();
      // ページネーション
@@ -123,21 +167,14 @@ public class ToppageServlet extends HttpServlet {
             page = 1;
         }
 
-        // 全ての顔文字を取得
-        List<Emoticon> emoticons = em.createNamedQuery(sort, Emoticon.class)//JPQLとして検索並び替え
-                .setFirstResult(20 * (page - 1))
-                .setMaxResults(20)
-                .getResultList();
-
-        long emoticons_count = (long)em.createNamedQuery("getEmoticonsCount", Long.class)
-                                      .getSingleResult();
 
         String searchKeyword = request.getParameter("search_keyword");//検索、カテゴリキーワードを取得
 
+        boolean notEntryFlg = false;
         if(searchKeyword != null) {//検索ワード入力してた場合
-
-            boolean notEntryFlg = true;
             Category c = new Category();
+            notEntryFlg = true;
+
 
             try {
             //検索ワードをカテゴリ名とし該当するidを取得
@@ -145,30 +182,87 @@ public class ToppageServlet extends HttpServlet {
             c = (Category)em.createNamedQuery("getCategoryName", Category.class)
                     .setParameter("category",searchKeyword)
                     .getSingleResult();
-            }catch(Exception ex){
+            }catch(Exception ex){//カテゴリが該当しなかった
                 notEntryFlg = false;
             }
-            if(notEntryFlg) {//ヒットした場合
-             emoticons = em.createNamedQuery("getEmoticonsByCategoryId", Emoticon.class)//カテゴリに該当する顔文字だけ取得
+            if(notEntryFlg) {//カテゴリidヒットした場合
+                String sort = request.getParameter("emoticons_sort");//並び替えの情報を取得（JPQL文）
+                if(sort == null || "getAllEmoticons".equals(sort) || "getEmoticonsByCategoryId".equals(sort)) {//新着順、もしくは情報ない
+                    sort = "getEmoticonsByCategoryId";//カテゴリidがヒットしたので対応するよう格納
+                } else if("getAllEmoticonsByOld".equals(sort) || "getEmoticonsByCategoryIdAndOld".equals(sort)) {//古い順
+                    sort = "getEmoticonsByCategoryIdAndOld";
+                } else if("getAllEmoticonsByCopy".equals(sort) || "getEmoticonsByCategoryIdAndCopy".equals(sort)) {//コピー順
+                    sort = "getEmoticonsByCategoryIdAndCopy";
+                } else if("getAllEmoticonsByLike".equals(sort) || "getEmoticonsByCategoryIdAndLike".equals(sort)){//いいね順
+                    sort = "getEmoticonsByCategoryIdAndLike";
+                }
+
+                    List<Emoticon> emoticons = em.createNamedQuery(sort, Emoticon.class)//カテゴリに該当する顔文字だけ取得
                     .setParameter("category_id", c)
                     .setFirstResult(20 * (page - 1))
                     .setMaxResults(20)
                     .getResultList();
 
-             emoticons_count = (long)em.createNamedQuery("getEmoticonsByCategoryIdCount", Long.class)//その件数取得
+                    long emoticons_count = (long)em.createNamedQuery("getEmoticonsByCategoryIdCount", Long.class)//その件数取得
                                           .setParameter("category_id", c)
                                           .getSingleResult();
+
+                    request.setAttribute("emoticonsSort", sort);//並び替えの選択状態を保持
+                    request.setAttribute("emoticons", emoticons);
+                    request.setAttribute("emoticons_count", emoticons_count);     // 全件数
+
+                }else {//なかった場合、全表示
+                    String sort = request.getParameter("emoticons_sort");//並び替えの情報を取得（JPQL文）
+                    if(sort == null || "getAllEmoticons".equals(sort) || "getEmoticonsByCategoryId".equals(sort) ) {//新着順、もしくは情報ない
+                        sort = "getAllEmoticons";//カテゴリidがヒットしてないので全件表示格納
+                    } else if("getAllEmoticonsByOld".equals(sort) || "getEmoticonsByCategoryIdAndOld".equals(sort)) {//古い順
+                        sort = "getAllEmoticonsByOld";
+                    } else if("getAllEmoticonsByCopy".equals(sort) || "getEmoticonsByCategoryIdAndCopy".equals(sort)) {//コピー順
+                        sort = "getAllEmoticonsByCopy";
+                    } else if("getAllEmoticonsByLike".equals(sort) || "getEmoticonsByCategoryIdAndLike".equals(sort)){//いいね順
+                        sort = "getAllEmoticonsByLike";
+                    }
+                    List<Emoticon> emoticons = em.createNamedQuery(sort, Emoticon.class)
+                            .setFirstResult(20 * (page - 1))
+                            .setMaxResults(20)
+                            .getResultList();
+
+                    long emoticons_count = (long)em.createNamedQuery("getEmoticonsCount", Long.class)//全件表示
+                                                  .getSingleResult();
+
+                    request.setAttribute("emoticonsSort", sort);//並び替えの選択状態を保持
+                    request.setAttribute("emoticons", emoticons);
+                    request.setAttribute("emoticons_count", emoticons_count);     // 全件数
+
             }
 
+        }else {//検索ワードない場合、全件、ソートのみ
+            String sort = request.getParameter("emoticons_sort");//並び替えの情報を取得（JPQL文）
+            if(sort == null || "getAllEmoticons".equals(sort) || "getEmoticonsByCategoryId".equals(sort)) {//新着順、もしくは情報ない
+                sort = "getAllEmoticons";//カテゴリidがヒットしてないので全件表示格納
+            } else if("getAllEmoticonsByOld".equals(sort) || "getEmoticonsByCategoryIdAndOld".equals(sort)) {//古い順
+                sort = "getAllEmoticonsByOld";
+            } else if("getAllEmoticonsByCopy".equals(sort) || "getEmoticonsByCategoryIdAndCopy".equals(sort)) {//コピー順
+                sort = "getAllEmoticonsByCopy";
+            } else if("getAllEmoticonsByLike".equals(sort) || "getEmoticonsByCategoryIdAndLike".equals(sort)){//いいね順
+                sort = "getAllEmoticonsByLike";
+            }
+            List<Emoticon> emoticons = em.createNamedQuery(sort, Emoticon.class)
+                    .setFirstResult(20 * (page - 1))
+                    .setMaxResults(20)
+                    .getResultList();
+
+            long emoticons_count = (long)em.createNamedQuery("getEmoticonsCount", Long.class)//全件表示
+                                          .getSingleResult();
+
+            request.setAttribute("emoticonsSort", sort);//並び替えの選択状態を保持
+            request.setAttribute("emoticons", emoticons);
+            request.setAttribute("emoticons_count", emoticons_count);     // 全件数
         }
 
         em.close();
 
-
-        request.setAttribute("searchKeyword", searchKeyword);
-        request.setAttribute("emoticonsSort", sort);//並び替えの選択状態を保持
-        request.setAttribute("emoticons", emoticons);
-        request.setAttribute("emoticons_count", emoticons_count);     // 全件数
+        request.setAttribute("searchKeyword", searchKeyword);//検索ワード
         request.setAttribute("page", page);                   // ページ数
 
         // フラッシュメッセージがセッションスコープにセットされていたら

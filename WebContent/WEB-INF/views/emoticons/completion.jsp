@@ -18,13 +18,13 @@
 
 <script>
 function ClickBtn_t(str){
-    document.location.href = "https://twitter.com/intent/tweet?";
     const baseUrl = 'https://twitter.com/intent/tweet?';
-    const text = ['text', '顔文字を作成したよ！ 作成した顔文字 ->',str];
+    const text = ['text', '顔文字を作成したよ！ 作成した顔文字 ->' + str];
     const hashtags = ['hashtags', ['顔文字メーカー'].join(',')];
     const url = ['url', location.href];
-    const via = ['via', 'tos'];
+    const via = ['via', 'satomyo'];
     const query = new URLSearchParams([text, hashtags, url, via]).toString();
-    const shareUrl = '${baseUrl}${query}';
+    const shareUrl = baseUrl + query;
+    window.open(shareUrl, '_blank');
 }
 </script>

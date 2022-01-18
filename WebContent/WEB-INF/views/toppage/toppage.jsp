@@ -33,10 +33,10 @@
                 <!-- 並べ替え表示 -->
                     <label for="emoticons_sort">並べ替え表示：</label>&nbsp;
                     <select name="emoticons_sort" id = "emoticons_sort" onchange="submit(this.form)">
-                        <option value="getAllEmoticons" <c:if test="${emoticonsSort == 'getAllEmoticons'}">selected</c:if>>新着順</option>
-                        <option value="getAllEmoticonsByOld" <c:if test="${emoticonsSort == 'getAllEmoticonsByOld'}">selected</c:if>>古い順</option>
-                        <option value="getAllEmoticonsByCopy" <c:if test="${emoticonsSort == 'getAllEmoticonsByCopy'}">selected</c:if>>人気順(累計コピー数)</option>
-                        <option value="getAllEmoticonsByLike" <c:if test="${emoticonsSort == 'getAllEmoticonsByLike'}">selected</c:if>>いいね順</option>
+                        <option value="getAllEmoticons" <c:if test="${emoticonsSort == 'getAllEmoticons' || emoticonsSort == 'getEmoticonsByCategoryId'}">selected</c:if>>新着順</option>
+                        <option value="getAllEmoticonsByOld" <c:if test="${emoticonsSort == 'getAllEmoticonsByOld' || emoticonsSort == 'getEmoticonsByCategoryIdAndOld'}">selected</c:if>>古い順</option>
+                        <option value="getAllEmoticonsByCopy" <c:if test="${emoticonsSort == 'getAllEmoticonsByCopy' || emoticonsSort == 'getEmoticonsByCategoryIdAndCopy'}">selected</c:if>>人気順(累計コピー数)</option>
+                        <option value="getAllEmoticonsByLike" <c:if test="${emoticonsSort == 'getAllEmoticonsByLike' || emoticonsSort == 'getEmoticonsByCategoryIdAndLike'}">selected</c:if>>いいね順</option>
                     </select>
                </form>
                </div>
