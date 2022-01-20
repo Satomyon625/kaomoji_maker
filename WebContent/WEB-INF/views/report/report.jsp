@@ -9,13 +9,21 @@
         <p>通報理由の記入をお願いします。</p>
         <p>こちらの顔文字に対する対処のご参考にさせていただきますm(_ _)m</p>
         <c:out value="${emoticon.emoticon}" />
-        <form method="post" action="<c:url value='/user/report' />">
-            <input type="text" name="report" size="60" value="" required />
-            <input type="hidden" name="_token" value="${_token}" />
-            <button type="submit">通報する</button>
+        <br/><br/>
+        <form method="POST" action="<c:url value='/user/report' />">
+        <c:import url="_form.jsp" />
+
         </form>
     </div>
     </c:when>
+    <c:otherwise>
+    <div id="center">
+        <h2>お探しのデータは見つかりませんでした。</h2>
+        </div>
+    </c:otherwise>
     </c:choose>
+    <div id="center">
+     <p><a href="<c:url value='/top'/>">顔文字一覧に戻る</a></p>
+    </div>
 </c:param>
 </c:import>

@@ -17,55 +17,55 @@ import javax.persistence.Table;
 @NamedQueries({
     @NamedQuery(
             name = "getAllEmoticons",
-            query = "SELECT e FROM Emoticon AS e ORDER BY e.id DESC"//デフォルト、新着順
+            query = "SELECT e FROM Emoticon AS e WHERE e.delete_flag = false ORDER BY e.id DESC"//デフォルト、新着順
             ),
     @NamedQuery(
             name = "getAllEmoticonsByOld",
-            query = "SELECT e FROM Emoticon AS e ORDER BY e.id ASC"//ソート、古い順
+            query = "SELECT e FROM Emoticon AS e WHERE e.delete_flag = false ORDER BY e.id ASC"//ソート、古い順
             ),
     @NamedQuery(
             name = "getAllEmoticonsByCopy",
-            query = "SELECT e FROM Emoticon AS e ORDER BY e.copy_number DESC"//ソート、コピー順
+            query = "SELECT e FROM Emoticon AS e WHERE e.delete_flag = false ORDER BY e.copy_number DESC"//ソート、コピー順
             ),
     @NamedQuery(
             name = "getAllEmoticonsByLike",
-            query = "SELECT e FROM Emoticon AS e ORDER BY e.like_number DESC"//ソート、いいね順
+            query = "SELECT e FROM Emoticon AS e WHERE e.delete_flag = false ORDER BY e.like_number DESC"//ソート、いいね順
             ),
     @NamedQuery(
             name = "getEmoticonsCount",
-            query = "SELECT COUNT(e) FROM Emoticon AS e"
+            query = "SELECT COUNT(e) FROM Emoticon AS e WHERE e.delete_flag = false"
         ),
     @NamedQuery(
             name = "getMyAllEmoticons",
-            query = "SELECT e FROM Emoticon AS e WHERE e.create_user = :create_user ORDER BY e.id DESC"
+            query = "SELECT e FROM Emoticon AS e WHERE e.create_user = :create_user AND e.delete_flag = false ORDER BY e.id DESC"
         ),
     @NamedQuery(
             name = "getCopy_numberCount",
-            query = "SELECT COUNT(e) FROM Emoticon AS e WHERE e.id = :id"
+            query = "SELECT COUNT(e) FROM Emoticon AS e WHERE e.id = :id AND e.delete_flag = false"
         ),
         @NamedQuery(
             name = "getMyEmoticonsCount",
-            query = "SELECT COUNT(e) FROM Emoticon AS e WHERE e.create_user = :create_user"
+            query = "SELECT COUNT(e) FROM Emoticon AS e WHERE e.create_user = :create_user AND e.delete_flag = false"
         ),
         @NamedQuery(
                 name = "getEmoticonsByCategoryId",
-                query = "SELECT e FROM Emoticon e, Transaction t WHERE e = t.emoticon_id AND t.category_id = :category_id ORDER BY e.id DESC"//検索したカテゴリidを条件にトランザクションテーブルとidを結合し顔文字を取得（新着順デフォルト）
+                query = "SELECT e FROM Emoticon e, Transaction t WHERE e.delete_flag = false AND e = t.emoticon_id AND t.category_id = :category_id ORDER BY e.id DESC"//検索したカテゴリidを条件にトランザクションテーブルとidを結合し顔文字を取得（新着順デフォルト）
             ),
         @NamedQuery(
                 name = "getEmoticonsByCategoryIdAndOld",
-                query = "SELECT e FROM Emoticon e, Transaction t WHERE e = t.emoticon_id AND t.category_id = :category_id ORDER BY e.id ASC"//検索したカテゴリidを条件にトランザクションテーブルとidを結合し顔文字を取得（古い順）
+                query = "SELECT e FROM Emoticon e, Transaction t WHERE e.delete_flag = false AND e = t.emoticon_id AND t.category_id = :category_id ORDER BY e.id ASC"//検索したカテゴリidを条件にトランザクションテーブルとidを結合し顔文字を取得（古い順）
             ),
         @NamedQuery(
                 name = "getEmoticonsByCategoryIdAndCopy",
-                query = "SELECT e FROM Emoticon e, Transaction t WHERE e = t.emoticon_id AND t.category_id = :category_id ORDER BY e.copy_number DESC"//検索したカテゴリidを条件にトランザクションテーブルとidを結合し顔文字を取得（コピー順）
+                query = "SELECT e FROM Emoticon e, Transaction t WHERE e.delete_flag = false AND e = t.emoticon_id AND t.category_id = :category_id ORDER BY e.copy_number DESC"//検索したカテゴリidを条件にトランザクションテーブルとidを結合し顔文字を取得（コピー順）
             ),
         @NamedQuery(
                 name = "getEmoticonsByCategoryIdAndLike",
-                query = "SELECT e FROM Emoticon e, Transaction t WHERE e = t.emoticon_id AND t.category_id = :category_id ORDER BY e.like_number DESC"//検索したカテゴリidを条件にトランザクションテーブルとidを結合し顔文字を取得（いいね順）
+                query = "SELECT e FROM Emoticon e, Transaction t WHERE e.delete_flag = false AND e = t.emoticon_id AND t.category_id = :category_id ORDER BY e.like_number DESC"//検索したカテゴリidを条件にトランザクションテーブルとidを結合し顔文字を取得（いいね順）
             ),
         @NamedQuery(
                 name = "getEmoticonsByCategoryIdCount",
-                query = "SELECT COUNT(e) FROM Emoticon e, Transaction t WHERE e = t.emoticon_id AND t.category_id = :category_id"//検索したカテゴリidを条件にトランザクションテーブルとidを結合し顔文字を取得
+                query = "SELECT COUNT(e) FROM Emoticon e, Transaction t WHERE e.delete_flag = false AND e = t.emoticon_id AND t.category_id = :category_id"//検索したカテゴリidを条件にトランザクションテーブルとidを結合し顔文字を取得
             )
 })
 @Entity

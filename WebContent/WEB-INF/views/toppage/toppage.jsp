@@ -61,7 +61,7 @@
                             </td>
                             <td class="emoticon_action">
                             <c:if test="${sessionScope.login_user != null}">
-                                <button class="report_b" onclick="location.href='<c:url value='/user/report' />'">通報</button>
+                                <button class="report_b" onclick="location.href='<c:url value='/user/report?id=${emoticon.id}' />'">通報</button>
                             </c:if>
                             </td>
                         </tr>
