@@ -37,7 +37,8 @@ public class LikeServlet extends HttpServlet {
             EntityManager em = DBUtil.createEntityManager();
 
             //パラメータ取得
-            int checkId = Integer.parseInt(likeId);
+            Integer checkId = Integer.parseInt(likeId);
+
             User user = (User)request.getSession().getAttribute("login_user");
             String checkUser = user.getU_name();
 
@@ -46,8 +47,8 @@ public class LikeServlet extends HttpServlet {
             try {
                 //ユーザーが該当する顔文字にすでにいいね済みか件数取得
                  Long count = (Long)em.createNamedQuery("getLikeCountByEmoticon_idAndLike_user", Long.class)
-                         .setParameter("emoticon_id", checkId)
-                         .setParameter("like_user", checkUser)
+                         .setParameter("emoticon_id", checkId)//Emoticonにキャスト
+                         .setParameter("like_user", checkUser)//userでok
                          .getSingleResult();
 
                  //件数判定

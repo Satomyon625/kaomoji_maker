@@ -11,7 +11,7 @@
 
         <div id= "center">
             <h2>顔文字一覧</h2>
-            <!-- 検索機能、別途フォーム用JSP作成無しで検証 -->
+            <!-- 検索機能 -->
             <div style="display:inline-flex">
                 <form method="POST" id="search" name="name" action="<c:url value='/top' />">
                    <label for="category_search">カテゴリ検索：</label>&nbsp;

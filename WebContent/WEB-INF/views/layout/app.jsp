@@ -18,10 +18,11 @@
                     <a href="<c:url value='/top' />">顔文字一覧</a>&nbsp;&nbsp;&nbsp;
                 <c:if test="${sessionScope.login_user != null}">
                     <a href="<c:url value='/user/emoticons/new' />">顔文字作成</a>&nbsp;
-                    <label for="mypage"><a>マイページ</a></label>&nbsp;&nbsp;&nbsp;
-                    <select name="mypage" id="mypage">
-                        <option ></option>
-                    </select>
+                    <select onChange="location.href=value;" name="mypage" id="mypage">
+                        <option selected>マイページ</option>
+                        <option value="<c:url value='/user/mypage/index' />">作成した顔文字</option>
+                        <option value="<c:url value='/user/mypage/like' />">いいねした顔文字</option>
+                    </select>&nbsp;
                     <a href="<c:url value='/logout' />">ログアウト</a>&nbsp;
                 </c:if>
                 <c:if test="${sessionScope.login_user == null}">

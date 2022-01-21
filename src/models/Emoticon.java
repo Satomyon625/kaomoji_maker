@@ -66,6 +66,14 @@ import javax.persistence.Table;
         @NamedQuery(
                 name = "getEmoticonsByCategoryIdCount",
                 query = "SELECT COUNT(e) FROM Emoticon e, Transaction t WHERE e.delete_flag = false AND e = t.emoticon_id AND t.category_id = :category_id"//検索したカテゴリidを条件にトランザクションテーブルとidを結合し顔文字を取得
+            ),
+        @NamedQuery(
+                name = "getEmoticonsByMyLike",
+                query = "SELECT e FROM Emoticon e, Like l WHERE e.id = l.emoticon_id AND l.like_user = :like_user AND e.delete_flag = false ORDER BY e.id DESC"//自分のいいねした顔文字
+            ),
+        @NamedQuery(
+                name = "getEmoticonsByMyLikeCount",
+                query = "SELECT COUNT(e) FROM Emoticon e, Like l WHERE e.id = l.emoticon_id AND l.like_user = :like_user AND e.delete_flag = false ORDER BY e.id DESC"//自分のいいねした顔文字をカウント
             )
 })
 @Entity
