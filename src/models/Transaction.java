@@ -21,7 +21,11 @@ import javax.persistence.Table;
             ),
     @NamedQuery(
             name = "getCategoryByDefault",
-            query = "SELECT t FROM Transaction AS t WHERE t.emoticon_id = :emoticon_id AND 8 >= :category_id"//デフォルトカテゴリでチェックされてるカテゴリを検索
+            query = "SELECT t FROM Transaction AS t WHERE t.emoticon_id = :emoticon_id AND 8 >= t.category_id.id"//デフォルトカテゴリでチェックされてるカテゴリを検索
+            ),
+    @NamedQuery(
+            name = "getCategoryCountByEmoticon",
+            query = "SELECT COUNT(t) FROM Transaction AS t WHERE t.emoticon_id = :emoticon_id"//該当する顔文字のカテゴリ登録数（レコード数）をカウント
             )
 })
 @Entity

@@ -69,18 +69,18 @@ public class ReportSaveServlet extends HttpServlet {
             em.persist(emoticon);
 
             /** 通報情報の更新 */
-            String[] reportIds = request.getParameterValues("report_id");
-            String[] dealReportIds = request.getParameterValues("deal_flag");
+            String[] reportIds = request.getParameterValues("report_id");//通報id
+            String[] dealReportIds = request.getParameterValues("deal_flag");//対応済み(Boolean)
             Map<String, Boolean> dealReportIdMap = new HashMap<String, Boolean>();
-            if (dealReportIds != null) {
+            if (dealReportIds != null) {//対応済みにチェックが入ってた場合
                 for (String dealReportId:dealReportIds) {
-                    dealReportIdMap.put(dealReportId, true);
+                    dealReportIdMap.put(dealReportId, true);//通報テーブルの対応済みをtrueにする
                 }
             }
             for (String reportId:reportIds) {
                 int id = Integer.parseInt(reportId);
-                Report report = em.find(Report.class, id);
-                report.setDeal_flag(dealReportIdMap.containsKey(reportId));
+                Report report = em.find(Report.class, id);//通報テーブルのid検索
+                report.setDeal_flag(dealReportIdMap.containsKey(reportId));//対応済みの有無
                 report.setUpdated_at(currentTime);
                 report.setUpdate_user(loginUser.getU_name());
                 em.persist(report);

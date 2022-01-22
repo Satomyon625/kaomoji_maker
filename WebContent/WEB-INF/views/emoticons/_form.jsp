@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="java.util.List"%>
+<%@ page import="java.util.ArrayList"%>
 
 <c:if test="${errors != null}">
     <div id="flush_error">
@@ -18,19 +20,39 @@
 <br /><br />
 
 <label for="category">追加するカテゴリ↓</label><br />
-<input id="happy" type="checkbox" id="嬉しい" name="category_c" value="1"<c:if test="${transaction.category_id == 0}">checked</c:if>><label for="嬉しい">嬉しい</label>
-<input id="sad" type="checkbox" id="悲しい" name="category_c" value="2"<c:if test="${transaction.category_id == 0}">checked</c:if>><label for="悲しい">悲しい</label>
-<input id="smile" type="checkbox" id="笑う" name="category_c" value="3"<c:if test="${transaction.category_id == 0}">checked</c:if>><label for="笑う">笑う</label>
-<input id="cute" type="checkbox" id="可愛い" name="category_c" value="4"<c:if test="${transaction.category_id == 0}">checked</c:if>><label for="可愛い">可愛い</label>
-<br />
-<input id="angry" type="checkbox" id="怒る" name="category_c" value="5"<c:if test="${transaction.category_id == 0}">checked</c:if>><label for="怒る">怒る</label>
-<input id="surprised" type="checkbox" id="驚く" name="category_c" value="6"<c:if test="${transaction.category_id == 0}">checked</c:if>><label for="驚く">驚く</label>
-<input id="sleep" type="checkbox" id="寝る" name="category_c" value="7"<c:if test="${transaction.category_id == 0}">checked</c:if>><label for="寝る">寝る</label>
-<input id="greeting" type="checkbox" id="挨拶" name="category_c" value="8"<c:if test="${transaction.category_id == 0}">checked</c:if>><label for="挨拶">挨拶</label>
+<% List<Integer> defaultCategories = (List)request.getAttribute("category_c");%>
+    <input id="happy" type="checkbox" name="category_c" value="1"
+        <% if(defaultCategories != null && defaultCategories.contains(1)) { %> checked <% } %>
+    ><label for="happy">嬉しい</label>
+    <input id="sad" type="checkbox" name="category_c" value="2"
+        <% if(defaultCategories != null && defaultCategories.contains(2)) { %> checked <% } %>
+    ><label for="sad">悲しい</label>
+    <input id="smile" type="checkbox" name="category_c" value="3"
+        <% if(defaultCategories != null && defaultCategories.contains(3)) { %> checked <% } %>
+    ><label for="smile">笑う</label>
+    <input id="cute" type="checkbox" name="category_c" value="4"
+        <% if(defaultCategories != null && defaultCategories.contains(4)) { %> checked <% } %>
+    ><label for="cute">可愛い</label>
+    <br>
+    <input id="angry" type="checkbox" name="category_c" value="5"
+        <% if(defaultCategories != null && defaultCategories.contains(5)) { %> checked <% } %>
+    ><label for="angry">怒る</label>
+    <input id="surprised" type="checkbox" name="category_c" value="6"
+        <% if(defaultCategories != null && defaultCategories.contains(6)) { %> checked <% } %>
+    ><label for="surprised">驚く</label>
+    <input id="sleep" type="checkbox" name="category_c" value="7"
+        <% if(defaultCategories != null && defaultCategories.contains(7)) { %> checked <% } %>
+    ><label for="sleep">寝る</label>
+    <input id="greeting" type="checkbox" name="category_c" value="8"
+        <% if(defaultCategories != null && defaultCategories.contains(8)) { %> checked <% } %>
+    ><label for="greeting">挨拶</label>
 <br /><br />
 
 <label for="other_category">その他のカテゴリ(追加)※３つまで</label><br />
-<input type="text" name="category" value="${tarnsaction.categry_id}">
-<input type="text" name="category" value="${tarnsaction.categry_id}">
-<input type="text" name="category" value="${tarnsaction.categry_id}">
+<c:forEach var="inputCategory" items="${inputCategories}">
+  <input type="text" name="category" value="${inputCategory}">
+</c:forEach>
+<c:forEach var="i" begin="1" end="${n_enough}" step="1">
+  <input type="text" name="category" >
+</c:forEach>
 <input type="hidden" name="_token" value="${_token}" />

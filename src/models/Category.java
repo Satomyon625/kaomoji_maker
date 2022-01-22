@@ -18,6 +18,10 @@ import javax.persistence.Table;
     @NamedQuery(
             name = "getCategoryName",
             query = "SELECT c FROM Category AS c WHERE c.category = :category"//カテゴリの重複をチェック、検索ワードに一致するカテゴリ名のid取得
+            ),
+    @NamedQuery(
+            name = "getCategoryByInput",
+            query = "SELECT c FROM Category c, Transaction t WHERE c.id = t.category_id.id AND t.emoticon_id = :emoticon_id AND 8 < t.category_id.id"//入力カテゴリ名を取得
             )
 })
 @Entity

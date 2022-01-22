@@ -1,6 +1,8 @@
 package controllers.emoticons;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.servlet.RequestDispatcher;
@@ -10,7 +12,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import models.Category;
 import models.Emoticon;
+import models.Transaction;
 import utils.DBUtil;
 
 /**
@@ -36,12 +40,30 @@ public class EmoticonsEditServlet extends HttpServlet {
 
         Emoticon e = em.find(Emoticon.class, Integer.parseInt(request.getParameter("id")));//顔文字
 
-       /* List<Transaction> category_c = em.createNamedQuery("getCategoryByDefault", Transaction.class)//デフォルトカテゴリ
+        List<Transaction> category_c = em.createNamedQuery("getCategoryByDefault", Transaction.class)//デフォルトカテゴリidを抽出
                 .setParameter("emoticon_id",e)
                 .getResultList();
 
-        request.setAttribute("category_c", category_c);
-*/
+        List<Integer> defaultCategories = new ArrayList<Integer>();
+        for(Transaction transaction :category_c) {
+            defaultCategories.add(transaction.getCategory_id().getId());//デフォルトカテゴリidを格納
+        }
+
+        request.setAttribute("category_c", defaultCategories);
+
+        List<Category> category_i = em.createNamedQuery("getCategoryByInput", Category.class)//入力カテゴリ名を抽出
+                .setParameter("emoticon_id",e)
+                .getResultList();
+
+        List<String> inputCategories = new ArrayList<String>();
+        for(Category category :category_i) {
+            inputCategories.add(category.getCategory());//カテゴリ名を格納
+        }
+        int n_enough = 3 - inputCategories.size();//足りない数
+
+        request.setAttribute("inputCategories", inputCategories);
+        request.setAttribute("n_enough", n_enough);//足りない分のテキストボックス
+
 
         em.close();
 
