@@ -145,7 +145,7 @@ public class EmoticonsCreateServlet extends HttpServlet {
 
                 for(var i = 0 ; i < category_c.length ; ++i) {//Category方の配列へ入れてく
                     Category c = em.find(Category.class, Integer.parseInt(strCategory_c[i]));//カテゴリid
-                    category_c[i] = c;
+                    category_c[i] = c;//トランザクションへ
                 }
                 for(var i = 0; i < category_c.length; ++i) {
                     Transaction t = new Transaction();

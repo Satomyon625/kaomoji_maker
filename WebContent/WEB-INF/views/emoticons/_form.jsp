@@ -18,15 +18,15 @@
 <br /><br />
 
 <label for="category">追加するカテゴリ↓</label><br />
-<input id="happy" type="checkbox" id="嬉しい" name="category_c" value="1"<c:if test="${category.id == 1}">checked</c:if>><label for="嬉しい">嬉しい</label>
-<input id="sad" type="checkbox" id="悲しい" name="category_c" value="2"<c:if test="${category.id == 2}">checked</c:if>><label for="悲しい">悲しい</label>
-<input id="smile" type="checkbox" id="笑う" name="category_c" value="3"<c:if test="${category.id == 3}">checked</c:if>><label for="笑う">笑う</label>
-<input id="cute" type="checkbox" id="可愛い" name="category_c" value="4"<c:if test="${category.id == 4}">checked</c:if>><label for="可愛い">可愛い</label>
+<input id="happy" type="checkbox" id="嬉しい" name="category_c" value="1"<c:if test="${transaction.category_id == 0}">checked</c:if>><label for="嬉しい">嬉しい</label>
+<input id="sad" type="checkbox" id="悲しい" name="category_c" value="2"<c:if test="${transaction.category_id == 0}">checked</c:if>><label for="悲しい">悲しい</label>
+<input id="smile" type="checkbox" id="笑う" name="category_c" value="3"<c:if test="${transaction.category_id == 0}">checked</c:if>><label for="笑う">笑う</label>
+<input id="cute" type="checkbox" id="可愛い" name="category_c" value="4"<c:if test="${transaction.category_id == 0}">checked</c:if>><label for="可愛い">可愛い</label>
 <br />
-<input id="angry" type="checkbox" id="怒る" name="category_c" value="5"<c:if test="${category.id == 5}">checked</c:if>><label for="怒る">怒る</label>
-<input id="surprised" type="checkbox" id="驚く" name="category_c" value="6"<c:if test="${category.id == 6}">checked</c:if>><label for="驚く">驚く</label>
-<input id="sleep" type="checkbox" id="寝る" name="category_c" value="7"<c:if test="${category.id == 7}">checked</c:if>><label for="寝る">寝る</label>
-<input id="greeting" type="checkbox" id="挨拶" name="category_c" value="8"<c:if test="${category.id == 8}">checked</c:if>><label for="挨拶">挨拶</label>
+<input id="angry" type="checkbox" id="怒る" name="category_c" value="5"<c:if test="${transaction.category_id == 0}">checked</c:if>><label for="怒る">怒る</label>
+<input id="surprised" type="checkbox" id="驚く" name="category_c" value="6"<c:if test="${transaction.category_id == 0}">checked</c:if>><label for="驚く">驚く</label>
+<input id="sleep" type="checkbox" id="寝る" name="category_c" value="7"<c:if test="${transaction.category_id == 0}">checked</c:if>><label for="寝る">寝る</label>
+<input id="greeting" type="checkbox" id="挨拶" name="category_c" value="8"<c:if test="${transaction.category_id == 0}">checked</c:if>><label for="挨拶">挨拶</label>
 <br /><br />
 
 <label for="other_category">その他のカテゴリ(追加)※３つまで</label><br />

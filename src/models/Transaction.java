@@ -18,6 +18,10 @@ import javax.persistence.Table;
     @NamedQuery(
             name = "SearchCategoryByName",
             query = "SELECT t FROM Transaction AS t WHERE t.category_id = :category_id"//カテゴリ検索(カテゴリ名を取り出してそのidを取得して検索)
+            ),
+    @NamedQuery(
+            name = "getCategoryByDefault",
+            query = "SELECT t FROM Transaction AS t WHERE t.emoticon_id = :emoticon_id AND 8 >= :category_id"//デフォルトカテゴリでチェックされてるカテゴリを検索
             )
 })
 @Entity

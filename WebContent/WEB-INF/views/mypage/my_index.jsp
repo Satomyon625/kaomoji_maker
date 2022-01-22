@@ -2,6 +2,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:import url="../layout/app.jsp">
     <c:param name="content">
+        <c:if test="${flush != null }">
+            <div id="flush_success">
+                <c:out value="${flush }"></c:out>
+            </div>
+        </c:if>
+
         <div id= "center">
             <h2>自分が登録した顔文字</h2>
                 <c:forEach var="emoticon" items="${emoticons}" varStatus="status">
