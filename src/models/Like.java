@@ -19,7 +19,11 @@ import javax.persistence.Table;
             ),
     @NamedQuery(
             name = "getLikeCountByEmoticon_idAndLike_user",
-            query = "SELECT COUNT(l) FROM Like AS l WHERE l.emoticon_id = :emoticon_id AND l.like_user = :like_user"
+            query = "SELECT COUNT(l) FROM Like AS l WHERE l.emoticon_id = :emoticon_id AND l.like_user = :like_user"//すでにいいね済みか確認
+            ),
+    @NamedQuery(
+            name = "getMyLikeByEmoticon",
+            query = "SELECT l FROM Like AS l WHERE l.emoticon_id = :emoticon_id AND l.like_user = :like_user"//該当する顔文字とユーザー名を取得
             )
 })
 @Entity
