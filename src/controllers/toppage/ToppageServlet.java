@@ -69,7 +69,7 @@ public class ToppageServlet extends HttpServlet {
                 notEntryFlg = false;
             }
             if(notEntryFlg) {//カテゴリidヒットした場合
-                sort = request.getParameter("emoticons_sort");//並び替えの情報を取得（JPQL文）
+
                 if(sort == null || "getAllEmoticons".equals(sort) || "getEmoticonsByCategoryId".equals(sort)) {//新着順、もしくは情報ない
                     sort = "getEmoticonsByCategoryId";//カテゴリidがヒットしたので対応するよう格納
                 } else if("getAllEmoticonsByOld".equals(sort) || "getEmoticonsByCategoryIdAndOld".equals(sort)) {//古い順
@@ -92,9 +92,10 @@ public class ToppageServlet extends HttpServlet {
 
                     request.setAttribute("emoticons", emoticons);
                     request.setAttribute("emoticons_count", emoticons_count);     // 全件数
+                    request.setAttribute("emoticonsSort",sort);//並び替え
 
                 }else {//なかった場合、全表示
-                    sort = request.getParameter("emoticons_sort");//並び替えの情報を取得（JPQL文）
+
                     if(sort == null || "getAllEmoticons".equals(sort) || "getEmoticonsByCategoryId".equals(sort)) {//新着順、もしくは情報ない
                         sort = "getAllEmoticons";//カテゴリidがヒットしてないので全件表示格納
                     } else if("getAllEmoticonsByOld".equals(sort) || "getEmoticonsByCategoryIdAndOld".equals(sort)) {//古い順
@@ -114,11 +115,12 @@ public class ToppageServlet extends HttpServlet {
 
                     request.setAttribute("emoticons", emoticons);
                     request.setAttribute("emoticons_count", emoticons_count);     // 全件数
+                    request.setAttribute("emoticonsSort",sort);//並び替え
 
             }
 
         }else {//検索ワードない場合、全件、ソートのみ
-            sort = request.getParameter("emoticons_sort");//並び替えの情報を取得（JPQL文）
+
             if(sort == null || "getAllEmoticons".equals(sort) || "getEmoticonsByCategoryId".equals(sort)) {//新着順、もしくは情報ない
                 sort = "getAllEmoticons";//カテゴリidがヒットしてないので全件表示格納
             } else if("getAllEmoticonsByOld".equals(sort) || "getEmoticonsByCategoryIdAndOld".equals(sort)) {//古い順
@@ -138,12 +140,12 @@ public class ToppageServlet extends HttpServlet {
 
             request.setAttribute("emoticons", emoticons);
             request.setAttribute("emoticons_count", emoticons_count);     // 全件数
+            request.setAttribute("emoticonsSort",sort);//並び替え
         }
 
         em.close();
 
         request.setAttribute("searchKeyword", searchKeyword);//検索
-        request.setAttribute("emoticonsSort",sort);//並び替え
         request.setAttribute("page", page);                   // ページ数
 
         // フラッシュメッセージがセッションスコープにセットされていたら
@@ -167,14 +169,12 @@ public class ToppageServlet extends HttpServlet {
             page = 1;
         }
 
-
         String searchKeyword = request.getParameter("search_keyword");//検索、カテゴリキーワードを取得
 
         boolean notEntryFlg = false;
         if(searchKeyword != null) {//検索ワード入力してた場合
             Category c = new Category();
             notEntryFlg = true;
-
 
             try {
             //検索ワードをカテゴリ名とし該当するidを取得
@@ -207,7 +207,7 @@ public class ToppageServlet extends HttpServlet {
                                           .setParameter("category_id", c)
                                           .getSingleResult();
 
-                    request.setAttribute("emoticonsSort", sort);//並び替えの選択状態を保持
+                    request.getSession().setAttribute("emoticonsSort", sort);//並び替えの選択状態を保持
                     request.setAttribute("emoticons", emoticons);
                     request.setAttribute("emoticons_count", emoticons_count);     // 全件数
 
@@ -230,7 +230,7 @@ public class ToppageServlet extends HttpServlet {
                     long emoticons_count = (long)em.createNamedQuery("getEmoticonsCount", Long.class)//全件表示
                                                   .getSingleResult();
 
-                    request.setAttribute("emoticonsSort", sort);//並び替えの選択状態を保持
+                    request.getSession().setAttribute("emoticonsSort", sort);//並び替えの選択状態を保持
                     request.setAttribute("emoticons", emoticons);
                     request.setAttribute("emoticons_count", emoticons_count);     // 全件数
 
@@ -255,22 +255,17 @@ public class ToppageServlet extends HttpServlet {
             long emoticons_count = (long)em.createNamedQuery("getEmoticonsCount", Long.class)//全件表示
                                           .getSingleResult();
 
-            request.setAttribute("emoticonsSort", sort);//並び替えの選択状態を保持
+            request.getSession().setAttribute("emoticonsSort", sort);//並び替えの選択状態を保持
             request.setAttribute("emoticons", emoticons);
             request.setAttribute("emoticons_count", emoticons_count);     // 全件数
         }
 
         em.close();
 
-        request.setAttribute("searchKeyword", searchKeyword);//検索ワード
+        request.getSession().setAttribute("searchKeyword", searchKeyword);//検索ワード
         request.setAttribute("page", page);                   // ページ数
 
-        // フラッシュメッセージがセッションスコープにセットされていたら
-        // リクエストスコープに保存する（セッションスコープからは削除）
-        if(request.getSession().getAttribute("flush") != null) {
-            request.setAttribute("flush", request.getSession().getAttribute("flush"));
-            request.getSession().removeAttribute("flush");
-        }
+
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/toppage/toppage.jsp");
         rd.forward(request, response);
     }

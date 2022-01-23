@@ -38,7 +38,7 @@ public class CopyServlet extends HttpServlet {
         EntityManager em = DBUtil.createEntityManager();
 
         //顔文字のid(Integer）を取得（パラメータ）
-       // int emoticon_id = Integer.parseInt(request.getParameter("emoticon_id"));
+        // int emoticon_id = Integer.parseInt(request.getParameter("emoticon_id"));
         Emoticon e = em.find(Emoticon.class, Integer.parseInt(request.getParameter("emoticon_id")));
         String message = null;
 
@@ -51,7 +51,6 @@ public class CopyServlet extends HttpServlet {
         em.getTransaction().commit();
         em.close();
         message = "コピー数にカウントされました。";
-
 
         //出力(レスポンスをmapに格納してJSON化)
 

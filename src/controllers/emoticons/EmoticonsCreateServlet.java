@@ -46,7 +46,6 @@ public class EmoticonsCreateServlet extends HttpServlet {
 
             e.setCreate_user((User)request.getSession().getAttribute("login_user"));
             e.setUpdated_user((User)request.getSession().getAttribute("login_user"));
-
             e.setEmoticon(request.getParameter("emoticon"));
             e.setCopy_number(0);
             e.setLike_number(0);
@@ -138,7 +137,6 @@ public class EmoticonsCreateServlet extends HttpServlet {
                 }
                 }//for文、カテゴリ入力した分登録処理し終える
 
-
                 try {
                 String[] strCategory_c = request.getParameterValues("category_c");//デフォルトのチェックボックス
                 Category[] category_c = new Category[strCategory_c.length];//カテゴリidをCategory型に変換
@@ -150,7 +148,6 @@ public class EmoticonsCreateServlet extends HttpServlet {
                 for(var i = 0; i < category_c.length; ++i) {
                     Transaction t = new Transaction();
                     t.setEmoticon_id(e);//idを取得し、書き込む
-
                     t.setCategory_id(category_c[i]);//カテゴリid
                     t.setCreate_user((User)request.getSession().getAttribute("login_user"));
                     t.setCreated_at(currentTime);

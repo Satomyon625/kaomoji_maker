@@ -40,7 +40,7 @@ public class EmoticonsEditServlet extends HttpServlet {
 
         Emoticon e = em.find(Emoticon.class, Integer.parseInt(request.getParameter("id")));//顔文字
 
-        List<Transaction> category_c = em.createNamedQuery("getCategoryByDefault", Transaction.class)//デフォルトカテゴリidを抽出
+        List<Transaction> category_c = em.createNamedQuery("getCategoryByDefault", Transaction.class)//デフォルトカテゴリレコードを格納
                 .setParameter("emoticon_id",e)
                 .getResultList();
 
@@ -51,7 +51,7 @@ public class EmoticonsEditServlet extends HttpServlet {
 
         request.setAttribute("category_c", defaultCategories);
 
-        List<Category> category_i = em.createNamedQuery("getCategoryByInput", Category.class)//入力カテゴリ名を抽出
+        List<Category> category_i = em.createNamedQuery("getCategoryByInput", Category.class)//入力カテゴリレコードを抽出
                 .setParameter("emoticon_id",e)
                 .getResultList();
 
@@ -63,7 +63,6 @@ public class EmoticonsEditServlet extends HttpServlet {
 
         request.setAttribute("inputCategories", inputCategories);
         request.setAttribute("n_enough", n_enough);//足りない分のテキストボックス
-
 
         em.close();
 

@@ -55,7 +55,6 @@ h2 {
     margin-bottom: 15px;
 }
 
-
 li {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -122,6 +121,8 @@ button {
 }
 
 .report_b {
+    font-size: 14px;
+    padding: 2px 6px;
     background-color: #fffdfd;
     border-color: #000000;
 }
@@ -134,6 +135,8 @@ button {
 }
 
 .copy_b {
+    font-size: 14px;
+    padding: 2px 6px;
     background-color: #aefff8;
     border-color: #9ce8e3;
 }

@@ -2,6 +2,7 @@ package controllers.emoticons;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -42,11 +43,11 @@ public class EmoticonsUpdateServlet extends HttpServlet {
         if(_token != null && _token.equals(request.getSession().getId())) {
             EntityManager em = DBUtil.createEntityManager();
 
-            Emoticon e = em.find(Emoticon.class, (Integer)(request.getSession().getAttribute("emoticon_id")));
+            Emoticon e = em.find(Emoticon.class, (Integer)(request.getSession().getAttribute("emoticon_id")));//顔文字id取得
 
-            e.setEmoticon(request.getParameter("emoticon"));
+            e.setEmoticon(request.getParameter("emoticon"));//顔文字更新
             Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-            e.setUpdated_at(currentTime);
+            e.setUpdated_at(currentTime);//更新日時
 
             List<String> errors = EmoticonValidator.validate(e);
             if(errors.size() > 0) {
@@ -59,17 +60,22 @@ public class EmoticonsUpdateServlet extends HttpServlet {
                 rd.forward(request, response);
 
             } else {//顔文字の方は無事更新された
-
+                em.getTransaction().begin();
                 try {//カテゴリを全く登録してない場合のため
-                //前回カテゴリが登録されてたらトランザクションのレコードを一旦削除
-                int transaction_count = (int)em.createNamedQuery("getCategoryCountByEmoticon", int.class)//その件数取得、そんなに多くないのでint型
-                        .setParameter("emoticon_id", (Integer)(request.getSession().getAttribute("emoticon_id")))
-                        .getSingleResult();
+                    List<Transaction> category_l = em.createNamedQuery("getCategoryByEmoticonAll", Transaction.class)//顔文字idが該当する全てのレコードを格納
+                            .setParameter("emoticon_id",e)
+                            .getResultList();
 
-                for(int i = 0; i < transaction_count; i ++) {//顔文字idが該当するレコードの数
-                Transaction t = em.find(Transaction.class, (Emoticon)(request.getSession().getAttribute("emoticon_id")));//顔文字id条件
-                em.remove(t);//顔文字idが一致したレコードを削除
-                }
+                    List<Integer> lastCategories = new ArrayList<Integer>();
+                    for(Transaction transaction :category_l) {
+                       lastCategories.add(transaction.getId());//主キーidを格納
+                    }
+
+                    for(Integer i : lastCategories) {//主キー格納したlistからfindメソッド使い、順に削除
+                        Transaction t = em.find(Transaction.class, i);
+                        em.remove(t);//レコードを削除
+                    }
+
                 } catch(Exception ex) {//カテゴリ登録してない場合
 
                 }
@@ -78,7 +84,6 @@ public class EmoticonsUpdateServlet extends HttpServlet {
 
                 String[] categories = request.getParameterValues("category");//入力されたカテゴリの数を取得、配列に格納
 
-                em.getTransaction().begin();
                 for(var i = 0; i < categories.length; ++i) {//カテゴリごとに、カテゴリマスタに重複してないか検索し、カテゴリマスタ,トランザクションに登録
                     if(!("".equals(categories[i]))) {//入力されてる
                         Category c = new Category();
@@ -114,7 +119,6 @@ public class EmoticonsUpdateServlet extends HttpServlet {
                 }
                 }//for文、カテゴリ入力した分登録処理し終える
 
-
                 try {
                 String[] strCategory_c = request.getParameterValues("category_c");//デフォルトのチェックボックス
                 Category[] category_c = new Category[strCategory_c.length];//カテゴリidをCategory型に変換
@@ -126,7 +130,6 @@ public class EmoticonsUpdateServlet extends HttpServlet {
                 for(var i = 0; i < category_c.length; ++i) {
                     Transaction t = new Transaction();
                     t.setEmoticon_id(e);//idを取得し、書き込む
-
                     t.setCategory_id(category_c[i]);//カテゴリid
                     t.setCreate_user((User)request.getSession().getAttribute("login_user"));
                     t.setCreated_at(currentTime);

@@ -26,6 +26,10 @@ import javax.persistence.Table;
     @NamedQuery(
             name = "getCategoryCountByEmoticon",
             query = "SELECT COUNT(t) FROM Transaction AS t WHERE t.emoticon_id = :emoticon_id"//該当する顔文字のカテゴリ登録数（レコード数）をカウント
+            ),
+    @NamedQuery(
+            name = "getCategoryByEmoticonAll",
+            query = "SELECT t FROM Transaction AS t WHERE t.emoticon_id = :emoticon_id"//該当する顔文字のレコードを全て取り出す
             )
 })
 @Entity

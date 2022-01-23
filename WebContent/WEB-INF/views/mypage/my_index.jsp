@@ -28,7 +28,7 @@
                 </table>
                 <hr class="hr1">
                </c:forEach>
-        </div>
+
         <div id="pagination">
             （全 ${emoticons_count} 件）<br />
             <c:forEach var="i" begin="1" end="${((emoticons_count - 1) / 20) + 1}" step="1">
@@ -43,6 +43,6 @@
             </c:forEach>
         </div>
         <br /><br/>
-
+    </div>
     </c:param>
 </c:import>

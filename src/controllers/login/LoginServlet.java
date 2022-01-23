@@ -40,7 +40,6 @@ public class LoginServlet extends HttpServlet {
             request.getSession().removeAttribute("flush");
         }
 
-
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/login/login.jsp");
         rd.forward(request, response);
     }

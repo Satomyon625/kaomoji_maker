@@ -44,7 +44,6 @@ public class ReportServlet extends HttpServlet {
         request.setAttribute("_token", request.getSession().getId());
         request.setAttribute("emoticon", e);
 
-
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/report/report.jsp");
         rd.forward(request, response);
     }

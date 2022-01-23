@@ -38,8 +38,6 @@ public class MyLikeServlet extends HttpServlet {
         User u_name = (User)request.getSession().getAttribute("login_user");//ログインユーザー
         String l_name = u_name.getU_name();
 
-
-
         // ページネーション
         int page;
         try {

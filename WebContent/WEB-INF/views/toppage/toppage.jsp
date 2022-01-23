@@ -28,7 +28,6 @@
                     <option value="挨拶">
                    </datalist>
 
-
                    <button  name="search_keyword" onclick="submit(this.form)">検索</button>&nbsp;
                 <!-- 並べ替え表示 -->
                     <label for="emoticons_sort">並べ替え表示：</label>&nbsp;
@@ -117,7 +116,6 @@
                 });
                 return message;
             }
-
 
         </script>
 
